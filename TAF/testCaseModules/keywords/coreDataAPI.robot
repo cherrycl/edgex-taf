@@ -78,13 +78,6 @@ Device autoEvents with "${reading_name}" send by frequency setting "${frequency_
     \  ${device_reading_count}=  get length  ${device_reading_data}
     \  run keyword and continue on failure  should be equal as integers  ${expected_device_reading_count}  ${device_reading_count}
 
-Query value descriptor for name "${value_descriptor_name}"
-    Create Session  Core Data  url=${coreDataUrl}
-    ${resp}=  Get Request  Core Data    ${coreDataValueDescriptorUri}/name/${value_descriptor_name}
-    run keyword if  ${resp.status_code}!=200  fail  "Incorrect status code"
-    run keyword if  ${resp.status_code}==200  log   ${resp.content}
-    Should Be Equal As Strings  ${resp.status_code}  200
-
 Query readings by value descriptor ${valueDescriptor} and device id "${deviceId}"
     Create Session  Core Data  url=${coreDataUrl}
     ${resp}=  Get Request  Core Data    ${coreDataReadingUri}/name/${valueDescriptor}/device/${deviceId}/100
@@ -118,3 +111,15 @@ Remove all events
     Create Session  Core Data  url=${coreDataUrl}
     ${resp}=  Delete Request  Core Data    ${coreDataEventUri}/removeold/age/0
 
+## Value descriptor
+Query value descriptor for name "${value_descriptor_name}"
+    Create Session  Core Data  url=${coreDataUrl}
+    ${resp}=  Get Request  Core Data    ${coreDataValueDescriptorUri}/name/${value_descriptor_name}
+    run keyword if  ${resp.status_code}!=200  fail  "Incorrect status code"
+    run keyword if  ${resp.status_code}==200  log   ${resp.content}
+    Should Be Equal As Strings  ${resp.status_code}  200
+
+ValueDescriptors created in Core Data is based on DeviceProfile "${device_profile_name}"
+    @{resources}=  Retrieve all resource names for the device profile "${device_profile_name}"
+    :For    ${resource_name}   IN    @{resources}
+    \   run keyword and continue on failure  Query value descriptor for name "${resource_name}"

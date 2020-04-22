@@ -61,6 +61,15 @@ Delete device profile by name ${device_profile_name}
     run keyword if  ${resp.status_code}!=200  log to console  ${resp.content}
     Should Be Equal As Strings  ${resp.status_code}  200
 
+Retrieve all resource names for the device profile "${device_profile_name}"
+    ${device_profile_content}=  Query device profile by name    ${device_profile_name}
+    ${device_profile_json}=  evaluate  json.loads('''${device_profile_content}''')  json
+    ${resource_length}=  get length  ${device_profile_json}[deviceResources]
+    @{resource_names}=   create list
+    :For    ${INDEX}  IN RANGE  ${resource_length}
+    \   Append To List    ${resource_names}    ${device_profile_json}[deviceResources][${INDEX}][name]
+    [Return]   ${resource_names}
+
 # Device
 Create device
     [Arguments]  ${device_file}

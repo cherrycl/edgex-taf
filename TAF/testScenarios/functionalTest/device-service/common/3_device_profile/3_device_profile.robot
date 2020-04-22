@@ -20,15 +20,4 @@ DeviceProfile "${device_profile_name}" should be created in Core Metadata
     Should return status code "200"
 
 DS should create ValueDescriptors in Core Data according to DeviceProfile "${device_profile_name}"
-    @{resources}=  Retrieve all resource names for the device profile "${device_profile_name}"
-    :For    ${resource_name}   IN    @{resources}
-    \   run keyword and continue on failure  Query value descriptor for name "${resource_name}"
-
-Retrieve all resource names for the device profile "${device_profile_name}"
-    ${device_profile_content}=  Query device profile by name    ${device_profile_name}
-    ${device_profile_json}=  evaluate  json.loads('''${device_profile_content}''')  json
-    ${resource_length}=  get length  ${device_profile_json}[deviceResources]
-    @{resource_names}=   create list
-    :For    ${INDEX}  IN RANGE  ${resource_length}
-    \   Append To List    ${resource_names}    ${device_profile_json}[deviceResources][${INDEX}][name]
-    [Return]   ${resource_names}
+    ValueDescriptors created in Core Data is based on DeviceProfile "${device_profile_name}"
