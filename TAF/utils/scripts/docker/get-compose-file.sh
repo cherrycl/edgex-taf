@@ -20,7 +20,8 @@ if [ "$USE_RELEASE" = "nightly-build" ]; then
   # generate single file docker-compose.yml for target configuration without
   # default device services, i.e. no device-virtual service
   ./sync-nightly-build.sh ${USE_SHA1} ${USE_NO_SECURITY} ${USE_ARM64}
-
+  echo ${USE_SHA1}
+  cat docker-compose-nexus${USE_NO_SECURITY}${USE_ARM64}.yml
   # Need to remove the existing device services so the added ones below don't conflict
   sed '/  device-rest:/,/- 127.0.0.1:49990:49990\/tcp/d' docker-compose-nexus${USE_NO_SECURITY}${USE_ARM64}.yml > temp/docker-compose-temp.yaml
 
