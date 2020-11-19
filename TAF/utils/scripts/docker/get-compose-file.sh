@@ -16,14 +16,13 @@ USE_SHA1=ac46fd88165b4151e308d67504df00df53ce3f55
 
 # # nightly or other release
 mkdir temp
-if [ "$USE_RELEASE" = "nightly-build" ]; then
+if [ "$USE_RELEASE" = "hanoi" ]; then
   # generate single file docker-compose.yml for target configuration without
   # default device services, i.e. no device-virtual service
   ./sync-nightly-build.sh ${USE_SHA1} ${USE_NO_SECURITY} ${USE_ARM64}
-  echo ${USE_SHA1}
-  cat docker-compose-nexus${USE_NO_SECURITY}${USE_ARM64}.yml
+  
   # Need to remove the existing device services so the added ones below don't conflict
-  sed '/  device-rest:/,/- 127.0.0.1:49990:49990\/tcp/d' docker-compose-nexus${USE_NO_SECURITY}${USE_ARM64}.yml > temp/docker-compose-temp.yaml
+  sed '/  device-rest:/,/- 127.0.0.1:49990:49990\/tcp/d' docker-compose-${USE_RELEASE}${USE_NO_SECURITY}${USE_ARM64}.yml > temp/docker-compose-temp.yaml
 
   # Insert device services into the compose file
   sed -e '/app-service-rules:/r docker-compose-device-service.yaml' -e //N temp/docker-compose-temp.yaml > temp/device-service-temp.yaml
