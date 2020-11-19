@@ -6,7 +6,7 @@ USE_ARCH=${2:--x86_64}
 USE_SECURITY=${3:--}
 USE_RELEASE=${4:-geneva}
 
-NIGHTLY_BUILD_SOURCE_URL="https://raw.githubusercontent.com/edgexfoundry/developer-scripts/master/compose-builder"
+NIGHTLY_BUILD_SOURCE_URL="https://raw.githubusercontent.com/edgexfoundry/developer-scripts/ac46fd88165b4151e308d67504df00df53ce3f55/compose-builder"
 
 # # x86_64 or arm64
 [ "$USE_ARCH" = "arm64" ] && USE_ARM64="-arm64" && ARM64_OPTION="arm64"
@@ -23,7 +23,7 @@ mkdir temp
 # Use base compose file from nightly-build for core services
 curl -o temp/nb-compose.yaml "${NIGHTLY_BUILD_SOURCE_URL}/docker-compose-base.yml"
 curl -o common.env "${NIGHTLY_BUILD_SOURCE_URL}/common.env"
-curl -o temp/geneva-compose.yaml "https://raw.githubusercontent.com/edgexfoundry/developer-scripts/master/releases/geneva/compose-files/docker-compose-geneva${USE_DB}${USE_NO_SECURITY}${USE_ARM64}.yml"
+curl -o temp/geneva-compose.yaml "https://raw.githubusercontent.com/edgexfoundry/developer-scripts/ac46fd88165b4151e308d67504df00df53ce3f55/releases/geneva/compose-files/docker-compose-geneva${USE_DB}${USE_NO_SECURITY}${USE_ARM64}.yml"
 
 # replace geneva core services with nightly-build core services
 sed -n '/metadata:/,/scheduler:/{//!p;}' temp/nb-compose.yaml > temp/core-services.yaml

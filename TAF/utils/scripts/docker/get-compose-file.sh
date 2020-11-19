@@ -5,7 +5,8 @@ USE_DB=${1:--redis}
 USE_ARCH=${2:--x86_64}
 USE_SECURITY=${3:--}
 USE_RELEASE=${4:-nightly-build}
-USE_SHA1=${5:-master}
+#USE_SHA1=${5:-master}
+USE_SHA1=ac46fd88165b4151e308d67504df00df53ce3f55
 
 # # x86_64 or arm64
 [ "$USE_ARCH" = "arm64" ] && USE_ARM64="-arm64"
@@ -44,7 +45,7 @@ if [ "$USE_RELEASE" = "nightly-build" ]; then
 
 else
   COMPOSE_FILE="docker-compose-${USE_RELEASE}${USE_DB}${USE_NO_SECURITY}${USE_ARM64}.yml"
-  curl -o ${COMPOSE_FILE} "https://raw.githubusercontent.com/edgexfoundry/developer-scripts/master/releases/${USE_RELEASE}/compose-files/${COMPOSE_FILE}"
+  curl -o ${COMPOSE_FILE} "https://raw.githubusercontent.com/edgexfoundry/developer-scripts/ac46fd88165b4151e308d67504df00df53ce3f55/releases/${USE_RELEASE}/compose-files/${COMPOSE_FILE}"
 
   cp ${COMPOSE_FILE} temp/docker-compose-temp.yaml
 
