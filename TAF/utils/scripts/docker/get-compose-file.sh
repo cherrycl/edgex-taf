@@ -5,7 +5,7 @@ USE_DB=${1:--redis}
 USE_ARCH=${2:--x86_64}
 USE_SECURITY=${3:--}
 USE_RELEASE=${4:-hanoi}
-USE_SHA1=${5:-master}
+USE_SHA1=${5:-hanoi}
 
 # # x86_64 or arm64
 [ "$USE_ARCH" = "arm64" ] && USE_ARM64="-arm64"
