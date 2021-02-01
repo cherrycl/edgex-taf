@@ -13,14 +13,14 @@ pipeline {
     }
 
     stages {
-        stage ('Run Test on arm64') {
+        stage ('Run Test on amd64') {
             environment {
-                ARCH = 'arm64'
-                TAF_COMMON_IMAGE = 'nexus3.edgexfoundry.org:10003/docker-edgex-taf-common-arm64:latest'
-                COMPOSE_IMAGE = 'nexus3.edgexfoundry.org:10003/edgex-devops/edgex-compose-arm64:latest'
+                ARCH = 'x86_64'
+                TAF_COMMON_IMAGE = 'nexus3.edgexfoundry.org:10003/docker-edgex-taf-common:latest'
+                COMPOSE_IMAGE = 'nexus3.edgexfoundry.org:10003/edgex-devops/edgex-compose:latest'
             }
             stages {
-                stage('arm64-redis'){
+                stage('amd64-redis'){
                     environment {
                         SECURITY_SERVICE_NEEDED = false
                     }
@@ -30,7 +30,7 @@ pipeline {
                         }
                     }
                 }
-                stage('arm64-redis-security'){
+                stage('amd64-redis-security'){
                     environment {
                         SECURITY_SERVICE_NEEDED = true
                     }
@@ -64,7 +64,7 @@ pipeline {
                         keepAll: true,
                         reportDir: 'TAF/testArtifacts/reports/merged-report',
                         reportFiles: "${LOGFILES}",
-                        reportName: 'Functional Test Reports']
+                        reportName: 'Integration Test Reports']
                 )
                 junit 'TAF/testArtifacts/reports/merged-report/**.xml'
             }
@@ -75,7 +75,7 @@ pipeline {
         cleanup {
             sh "docker run --rm --network host -v /home/${USER}/.docker/config.json:/root/.docker/config.json \
                 -v ${env.WORKSPACE}:${env.WORKSPACE} -w ${env.WORKSPACE}/TAF/testArtifacts/reports \
-                --entrypoint rm nexus3.edgexfoundry.org:10003/docker-edgex-taf-common-arm64:latest \
+                --entrypoint rm nexus3.edgexfoundry.org:10003/docker-edgex-taf-common:latest \
                 -rf ${env.WORKSPACE}/*"
 
             script {
@@ -96,7 +96,7 @@ def startTest() {
     catchError {
         timeout(time: 1, unit: 'HOURS') {
             def rootDir = pwd()
-            def runTestScripts = load "${rootDir}/runFunctionalTest.groovy"
+            def runTestScripts = load "${rootDir}/runIntegrationTest.groovy"
             runTestScripts.main()
         }
     }

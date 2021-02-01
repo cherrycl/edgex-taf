@@ -51,7 +51,7 @@ pipeline {
 
                     dir ('TAF/testArtifacts/reports/merged-report/') {
                         LOGFILES= sh (
-                            script: 'ls *-log.html | sed ":a;N;s/\\n/,/g;ta"',
+                            script: 'ls *log.html | sed ":a;N;s/\\n/,/g;ta"',
                             returnStdout: true
                         )
                     }

@@ -64,7 +64,7 @@ pipeline {
                         keepAll: true,
                         reportDir: 'TAF/testArtifacts/reports/merged-report',
                         reportFiles: "${LOGFILES}",
-                        reportName: 'Functional Test Reports']
+                        reportName: 'Integration Test Reports']
                 )
                 junit 'TAF/testArtifacts/reports/merged-report/**.xml'
             }
@@ -96,7 +96,7 @@ def startTest() {
     catchError {
         timeout(time: 1, unit: 'HOURS') {
             def rootDir = pwd()
-            def runTestScripts = load "${rootDir}/runFunctionalTest.groovy"
+            def runTestScripts = load "${rootDir}/runIntegrationTest.groovy"
             runTestScripts.main()
         }
     }
