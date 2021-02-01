@@ -16,7 +16,7 @@ pipeline {
         stage ('Run Test on arm64') {
             environment {
                 ARCH = 'arm64'
-                TAF_COMMOM_IMAGE = 'nexus3.edgexfoundry.org:10003/docker-edgex-taf-common-arm64:latest'
+                TAF_COMMON_IMAGE = 'nexus3.edgexfoundry.org:10003/docker-edgex-taf-common-arm64:latest'
                 COMPOSE_IMAGE = 'nexus3.edgexfoundry.org:10003/edgex-devops/edgex-compose-arm64:latest'
             }
             stages {
