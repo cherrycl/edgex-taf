@@ -183,6 +183,7 @@ Query Ping
     ${headers}=  Create Dictionary  Authorization=Bearer ${jwt_token}
     Create Session  Ping  url=${url}  disable_warnings=true
     ${resp}=  GET On Session  Ping  api/${api_version}/ping  headers=${headers}  expected_status=200
+    #${resp}=  get request  Ping  api/${api_version}/ping  headers=${headers}
     Set Response to Test Variables  ${resp}
 
 Query Config

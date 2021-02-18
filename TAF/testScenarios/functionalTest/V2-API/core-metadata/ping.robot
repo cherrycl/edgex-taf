@@ -15,6 +15,7 @@ ${api_version}    v2
 *** Test Cases ***
 InfoGET001 - Query ping
     FOR  ${INDEX}  IN RANGE  0  200
-        Log  Ping time: ${INDEX}
+        log to console  Ping time: ${INDEX}
+        sleep  500ms
         Query Ping
     END
