@@ -185,6 +185,7 @@ Query Ping
     ${resp}=  GET On Session  Ping  api/${api_version}/ping  headers=${headers}  expected_status=200
     #${resp}=  get request  Ping  api/${api_version}/ping  headers=${headers}
     Set Response to Test Variables  ${resp}
+    Delete All Sessions
 
 Query Config
     ${headers}=  Create Dictionary  Authorization=Bearer ${jwt_token}

@@ -144,6 +144,7 @@ Delete multiple device profiles by names
     FOR  ${profile}  IN  @{profile_list}
         Delete device profile by name  ${profile}
     END
+    Delete All Sessions
 
 # Device
 # v1 only: in functionalTest/device-service/common/ and integrationTest
