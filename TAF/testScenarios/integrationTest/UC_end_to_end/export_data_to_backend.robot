@@ -22,7 +22,8 @@ ${LOG_FILE_PATH}          ${WORK_DIR}/TAF/testArtifacts/logs/export_data_to_back
 Export001 - Export events/readings to HTTP Server
     [Tags]  SmokeTest
     ${handle}=  Start process  python ${WORK_DIR}/TAF/utils/src/setup/httpd_server.py &  shell=True   # Start HTTP Server
-    #Given Deploy services  app-service-http-export
+    Given Deploy services  app-service-http-export
+    sleep  1s
     And Create device  create_device.json
     When Get device data by device "Test-Device" and command "GenerateDeviceValue_INT8_RW"
     Then HTTP Server received event is the same with exported from service "app-service-http-export"

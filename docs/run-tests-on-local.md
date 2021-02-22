@@ -7,8 +7,10 @@ cd ${HOME}
 git clone https://github.com/edgexfoundry/edgex-taf.git
 ```
 
-### Using The edgeX-taf-common Container To Run Testing
+`Run tests either edgeX-taf-common Container or python comman`
 
+### Using The edgeX-taf-common Container To Run Testing
+---
 ####  Variables configuration
 Export the following variables that depend on running environment
 ``` 
@@ -34,6 +36,7 @@ Open the report file by browser: ${WORK_DIR}/TAF/testArtifacts/reports/cp-edgex/
 
 
 ### Using Python Command To Run Testing
+---
 #### Setup required library
 1. Install pre-request packages:
     Download pip3 and run this command:
