@@ -22,13 +22,13 @@ ${LOG_FILE_PATH}          ${WORK_DIR}/TAF/testArtifacts/logs/export_data_to_back
 Export001 - Export events/readings to HTTP Server
     [Tags]  SmokeTest
     ${handle}=  Start process  python ${WORK_DIR}/TAF/utils/src/setup/httpd_server.py &  shell=True   # Start HTTP Server
-    Given Deploy services  app-service-http-export
+    #Given Deploy services  app-service-http-export
     And Create device  create_device.json
     When Get device data by device "Test-Device" and command "GenerateDeviceValue_INT8_RW"
     Then HTTP Server received event is the same with exported from service "app-service-http-export"
     [Teardown]  Run keywords  Delete device by name Test-Device
                 ...           AND  Remove all events
-                ...           AND  remove services  app-service-http-export
+    #            ...           AND  remove services  app-service-http-export
                 ...           AND  Terminate Process  ${handle}  kill=True
 
 Export002 - Export events/readings to MQTT Server
@@ -46,13 +46,13 @@ Export002 - Export events/readings to MQTT Server
                 ...           AND  remove services  app-service-mqtt-export  mqtt-broker
 
 ExportErr001 - Export events/readings to unreachable HTTP backend
-    Given Deploy services  app-service-http-export
+    #Given Deploy services  app-service-http-export
     And Create device  create_device.json
     When Get device data by device "Test-Device" and command "GenerateDeviceValue_INT32_RW"
     Then No exported logs found on configurable application service  app-service-http-export
     [Teardown]  Run keywords  Delete device by name Test-Device
                 ...           AND  Remove all events
-                ...           AND  remove services  app-service-http-export
+    #            ...           AND  remove services  app-service-http-export
 
 ExportErr002 - Export events/readings to unreachable MQTT backend
     Given Deploy services  app-service-mqtt-export
