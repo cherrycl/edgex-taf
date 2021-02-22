@@ -18,7 +18,7 @@ export WORK_DIR=${HOME}/edgex-taf
 
 #### Run test by shell script with arguments
 ```
-cd ${WORK_DIR}/TAF/utils/script/docker
+cd ${WORK_DIR}/TAF/utils/scripts/docker
 sh run-tests.sh ${ARCH} ${SECURITY_SERVICE_NEEDED} ${TEST_STRATEGY}
 # ex. sh run-tests.sh x86_64 false 1
 
