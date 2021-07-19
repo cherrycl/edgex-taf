@@ -119,7 +119,7 @@ Start Services
   ...          --env WORK_DIR=${WORK_DIR}  --security-opt label:disable ${COMPOSE_IMAGE} \
   ...          -f "${WORK_DIR}/TAF/utils/scripts/docker/docker-compose.yml" start
   Run Process  ${command}  shell=True
-  sleep  8s
-  ${result}=  Run Process  docker ps -a | grep Exited  shell=True
+  sleep  10s
+  ${result}=  Run Process  docker ps -a | grep -Ev security-proxy-setup | grep Exited  shell=True
   Run Keyword If  ${result.rc} == 0  log  ${result.stdout}
   Should Not Be Equal As Integers  ${result.rc}  0  >>> Start Services Fail <<<
