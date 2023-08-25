@@ -54,3 +54,7 @@ else:
 # External MQTT Auth
 EX_BROKER_USER = os.getenv("EX_BROKER_USER")
 EX_BROKER_PASSWD = os.getenv("EX_BROKER_PASSWD")
+
+# HTTP Server Auth
+HTTP_USER = os.getenv("HTTP_USER")
+HTTP_PASSWD = os.getenv("HTTP_PASSWD")

@@ -35,6 +35,8 @@ for compose in ${COMPOSE_FILE}; do
     sed -n "/^\ \ ${profile}:/,/^  [a-z].*:$/p" ${compose}.yml | sed '$d' > tmp/${profile}.yml  # print device-service
     sed -i 's/\CONFIG_DIR_PLACE_HOLDER/${CONFIG_DIR}/g' tmp/${profile}.yml
     sed -i "s/\PROFILE_VOLUME_PLACE_HOLDER/\${WORK_DIR}\/TAF\/config\/${profile}/g" tmp/${profile}.yml
+    sed -i '/\ \ \ \ environment:/a \ \ \ \ \ \ DEVICE_PROFILES: "${CONFIG_DIR}"' tmp/${profile}.yml
+    sed -i '/\ \ \ \ environment:/a \ \ \ \ \ \ DEVICE_DEVICES: "${CONFIG_DIR}"' tmp/${profile}.yml
 
     # Enable Delayed Start
     if [ "${TEST_STRATEGY}" = "integration-test" ] && [ "${USE_SECURITY}" = '-security-' ] \
@@ -130,6 +132,22 @@ for compose in ${COMPOSE_FILE}; do
     sed -i "s/modbus-simulator_1${USE_ARM64}:latest/modbus-simulator${USE_ARM64}:latest/g" tmp/modbus-sim_1.yml
     sed -i 's/published: \"1502\"/published: "1512"/g' tmp/modbus-sim_1.yml
     sed -i "/services:/ r tmp/modbus-sim_1.yml" ${compose}.yml
+
+    # URI for files
+    if [ "${USE_SECURITY}" = '-' ]; then
+      HTTP_SERVER_DIR='http://${HTTP_USER}:${HTTP_PASSWD}@httpd-auth:80/files'
+      sed -n "/^\ \ core-metadata:/,/^  [a-z].*:$/p" ${compose}.yml | sed '$d' > tmp/core-metadata.yml
+      sed -i "/\ \ \ \ environment:/a \ \ \ \ \ \ UOM_UOMFILE: ${HTTP_SERVER_DIR}/uom.yaml" tmp/core-metadata.yml
+      sed -n "/^\ \ device-onvif-camera:/,/^  [a-z].*:$/p" ${compose}.yml | sed '$d' > tmp/device-onvif-camera.yml
+      sed -i "/\ \ \ \ environment:/a \ \ \ \ \ \ EDGEX_CONFIG_FILE: ${HTTP_SERVER_DIR}/config.yaml" tmp/device-onvif-camera.yml
+      sed -i "/\ \ \ \ environment:/a \ \ \ \ \ \ EDGEX_PROFILESDIR: ${HTTP_SERVER_DIR}/profile.json" tmp/device-onvif-camera.yml
+      sed -i "/\ \ \ \ environment:/a \ \ \ \ \ \ DEVICE_DEVICESDIR: ${HTTP_SERVER_DIR}/device.json" tmp/device-onvif-camera.yml
+      sed -i "/\ \ \ \ environment:/a \ \ \ \ \ \ DEVICE_PROVISIONWATCHERSDIR: ${HTTP_SERVER_DIR}/provisionwatcher.json" tmp/device-onvif-camera.yml
+      sed -i "/^\ \ core-metadata:/,/^  [a-z].*:$/{//!d}; /^\ \ core-metadata:/d" ${compose}.yml
+      sed -i "/^\ \ device-onvif-camera:/,/^  [a-z].*:$/{//!d}; /^\ \ device-onvif-camera:/d" ${compose}.yml
+      sed -i "/services:/ r tmp/core-metadata.yml" ${compose}.yml
+      sed -i "/services:/ r tmp/device-onvif-camera.yml" ${compose}.yml
+    fi
   fi
 
   # Update services which use DOCKER_HOST_IP
@@ -154,5 +172,13 @@ for compose in ${COMPOSE_FILE}; do
 
   sed -i 's/\LOGLEVEL: INFO/LOGLEVEL: DEBUG/g' ${compose}.yml
   sed -i '/METRICSMECHANISM/d' ${compose}.yml  # remove METRICSMECHANISM env variable to allow change on Consul
+
+  # Put HTTP Server On the top of compose file
+  if [ "${TEST_STRATEGY}" = "integration-test"  ]; then
+      sed -i "/services:/ r httpd/tools_yaml" ${compose}.yml
+  fi
 done
 rm -rf tmp
+
+# Download test data for URI for files
+sh get-uri-test-files.sh
