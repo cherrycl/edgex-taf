@@ -181,4 +181,4 @@ done
 rm -rf tmp
 
 # Download test data for URI for files
-sh get-uri-test-files.sh
+sh get-uri-test-files.sh ${USE_SECURITY}

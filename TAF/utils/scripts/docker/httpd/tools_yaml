@@ -1,8 +1,6 @@
   httpd:
     restart: always
     image: httpd:alpine
-    ports:
-      - "7770:80"
     volumes:
       - ${WORK_DIR}/TAF/testData/httpd:/usr/local/apache2/htdocs/files
       - ${WORK_DIR}/TAF/utils/scripts/docker/httpd/httpd.conf:/usr/local/apache2/conf/httpd.conf
