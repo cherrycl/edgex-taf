@@ -75,7 +75,6 @@ for compose in ${COMPOSE_FILE}; do
   if [ "${TEST_STRATEGY}" = "integration-test" ]; then
     sed -n "/^\ \ core-command:/,/^  [a-z].*:$/p" ${compose}.yml | sed '$d' > tmp/core-command.yml
     sed -i '/EXTERNALMQTT_URL/d' tmp/core-command.yml
-    sed -i '/\ \ \ \ environment:/a \ \ \ \ \ \ EXTERNALMQTT_ENABLED: true' tmp/core-command.yml
     sed -i '/\ \ \ \ environment:/a \ \ \ \ \ \ EXTERNALMQTT_URL: tcp:\/\/${EXTERNAL_BROKER_HOSTNAME}:1883' tmp/core-command.yml
     sed -i '/\ \ \ \ environment:/a \ \ \ \ \ \ EXTERNALMQTT_RETAIN: false' tmp/core-command.yml
     sed -i '/\ \ \ \ environment:/a \ \ \ \ \ \ EXTERNALMQTT_AUTHMODE: usernamepassword' tmp/core-command.yml
@@ -85,6 +84,13 @@ for compose in ${COMPOSE_FILE}; do
     else
       sed -i '/\ \ \ \ environment:/a \ \ \ \ \ \ WRITABLE_INSECURESECRETS_MQTT_SECRETDATA_USERNAME: ${EX_BROKER_USER}' tmp/core-command.yml
       sed -i '/\ \ \ \ environment:/a \ \ \ \ \ \ WRITABLE_INSECURESECRETS_MQTT_SECRETDATA_PASSWORD: ${EX_BROKER_PASSWD}' tmp/core-command.yml
+      # Uri for files
+      sed -i "/\ \ \ \ environment:/a \ \ \ \ \ \ EDGEX_COMMON_CONFIG: ${HTTP_SERVER_DIR}/common-config.yaml" tmp/core-command.yml
+      sed -i '/\ \ \ \ environment:/a \ \ \ \ \ \ EDGEX_CONFIG_PROVIDER: none' tmp/core-command.yml
+      sed -i '/\ \ \ \ environment:/a \ \ \ \ \ \ DATABASE_HOST: edgex-redis' tmp/core-command.yml
+      sed -i '/\ \ \ \ environment:/a \ \ \ \ \ \ MESSAGEBUS_HOST: edgex-redis' tmp/core-command.yml
+      sed -i '/\ \ \ \ environment:/a \ \ \ \ \ \ REGISTRY_HOST: edgex-core-consul' tmp/core-command.yml
+      ###
     fi
     sed -i "/^\ \ core-command:/,/^  [a-z].*:$/{//!d}; /^\ \ core-command:/d" ${compose}.yml
     sed -i "/services:/ r tmp/core-command.yml" ${compose}.yml
@@ -134,20 +140,24 @@ for compose in ${COMPOSE_FILE}; do
     sed -i "/services:/ r tmp/modbus-sim_1.yml" ${compose}.yml
 
     # URI for files
+    sed -n "/^\ \ device-onvif-camera:/,/^  [a-z].*:$/p" ${compose}.yml | sed '$d' > tmp/device-onvif-camera.yml
     if [ "${USE_SECURITY}" = '-' ]; then
       HTTP_SERVER_DIR='http://${HTTP_USER}:${HTTP_PASSWD}@httpd-auth:80/files'
       sed -n "/^\ \ core-metadata:/,/^  [a-z].*:$/p" ${compose}.yml | sed '$d' > tmp/core-metadata.yml
       sed -i "/\ \ \ \ environment:/a \ \ \ \ \ \ UOM_UOMFILE: ${HTTP_SERVER_DIR}/uom.yaml" tmp/core-metadata.yml
-      sed -n "/^\ \ device-onvif-camera:/,/^  [a-z].*:$/p" ${compose}.yml | sed '$d' > tmp/device-onvif-camera.yml
       sed -i "/\ \ \ \ environment:/a \ \ \ \ \ \ EDGEX_CONFIG_FILE: ${HTTP_SERVER_DIR}/config.yaml" tmp/device-onvif-camera.yml
       sed -i "/\ \ \ \ environment:/a \ \ \ \ \ \ EDGEX_PROFILESDIR: ${HTTP_SERVER_DIR}/profile.json" tmp/device-onvif-camera.yml
       sed -i "/\ \ \ \ environment:/a \ \ \ \ \ \ DEVICE_DEVICESDIR: ${HTTP_SERVER_DIR}/device.json" tmp/device-onvif-camera.yml
       sed -i "/\ \ \ \ environment:/a \ \ \ \ \ \ DEVICE_PROVISIONWATCHERSDIR: ${HTTP_SERVER_DIR}/provisionwatcher.json" tmp/device-onvif-camera.yml
       sed -i "/^\ \ core-metadata:/,/^  [a-z].*:$/{//!d}; /^\ \ core-metadata:/d" ${compose}.yml
-      sed -i "/^\ \ device-onvif-camera:/,/^  [a-z].*:$/{//!d}; /^\ \ device-onvif-camera:/d" ${compose}.yml
       sed -i "/services:/ r tmp/core-metadata.yml" ${compose}.yml
-      sed -i "/services:/ r tmp/device-onvif-camera.yml" ${compose}.yml
+    else
+      sed -i "/\ \ \ \ environment:/a \ \ \ \ \ \ EDGEX_PROFILESDIR: .\/res" tmp/device-onvif-camera.yml
+      sed -i "/\ \ \ \ environment:/a \ \ \ \ \ \ DEVICE_DEVICESDIR: .\/res" tmp/device-onvif-camera.yml
+      sed -i "/\ \ \ \ environment:/a \ \ \ \ \ \ DEVICE_PROVISIONWATCHERSDIR: .\/res" tmp/device-onvif-camera.yml
     fi
+    sed -i "/^\ \ device-onvif-camera:/,/^  [a-z].*:$/{//!d}; /^\ \ device-onvif-camera:/d" ${compose}.yml
+    sed -i "/services:/ r tmp/device-onvif-camera.yml" ${compose}.yml
   fi
 
   # Update services which use DOCKER_HOST_IP
