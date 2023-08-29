@@ -73,6 +73,8 @@ for compose in ${COMPOSE_FILE}; do
 
   # Enable North-South Messaging
   if [ "${TEST_STRATEGY}" = "integration-test" ]; then
+    HTTP_SERVER_DIR='http://${HTTP_USER}:${HTTP_PASSWD}@httpd-auth:80/files'  ## URI for files
+
     sed -n "/^\ \ core-command:/,/^  [a-z].*:$/p" ${compose}.yml | sed '$d' > tmp/core-command.yml
     sed -i '/EXTERNALMQTT_URL/d' tmp/core-command.yml
     sed -i '/\ \ \ \ environment:/a \ \ \ \ \ \ EXTERNALMQTT_URL: tcp:\/\/${EXTERNAL_BROKER_HOSTNAME}:1883' tmp/core-command.yml
@@ -142,7 +144,6 @@ for compose in ${COMPOSE_FILE}; do
     # URI for files
     sed -n "/^\ \ device-onvif-camera:/,/^  [a-z].*:$/p" ${compose}.yml | sed '$d' > tmp/device-onvif-camera.yml
     if [ "${USE_SECURITY}" = '-' ]; then
-      HTTP_SERVER_DIR='http://${HTTP_USER}:${HTTP_PASSWD}@httpd-auth:80/files'
       sed -n "/^\ \ core-metadata:/,/^  [a-z].*:$/p" ${compose}.yml | sed '$d' > tmp/core-metadata.yml
       sed -i "/\ \ \ \ environment:/a \ \ \ \ \ \ UOM_UOMFILE: ${HTTP_SERVER_DIR}/uom.yaml" tmp/core-metadata.yml
       sed -i "/\ \ \ \ environment:/a \ \ \ \ \ \ EDGEX_CONFIG_FILE: ${HTTP_SERVER_DIR}/config.yaml" tmp/device-onvif-camera.yml
