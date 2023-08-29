@@ -22,9 +22,12 @@ if [ "${USE_SECURITY}" = "-"  ]; then
   curl -o config.yaml ${ONVIF_URL}/configuration.yaml
 
   ## Update onvif-camera configuration file
-  #sed -i "s/.\/res\/profiles/${HTTP_SERVER_DIR}\/profile.json/g" config.yaml
-  #sed -i "s/.\/res\/devices/${HTTP_SERVER_DIR}\/device.json/g" config.yaml
-  #sed -i "s/.\/res\/provisionwatchers/${HTTP_SERVER_DIR}\/provisionwatcher.json/g" config.yaml
+  sed -i "s/.\/res\/profiles/${HTTP_SERVER_DIR}\/profile.json/g" config.yaml
+  sed -i "s/.\/res\/devices/${HTTP_SERVER_DIR}\/device.json/g" config.yaml
+  sed -i "s/.\/res\/provisionwatchers/${HTTP_SERVER_DIR}\/provisionwatcher.json/g" config.yaml
+
+  # Download common-configuration file
+  curl -o common-config.yaml ${GITHUB_URL}/edgex-go/main/cmd/core-common-config-bootstrapper/res/configuration.yaml
 fi
 
 ## Update onvif-camera sample files
