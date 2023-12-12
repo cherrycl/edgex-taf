@@ -36,7 +36,7 @@ CoreConfig002 - Set core-data MessageBus.Optional.Qos (SUBSCRIBE)
     When Get device data by device ${device_name} and command ${PREFIX}_GenerateDeviceValue_UINT8_RW with ds-pushevent=true
     Then Should Return Status Code "200" And event
     And Event Has Been Pushed To Core Data
-    And Verify MQTT Broker Qos
+    And Wait Until Keyword Succeeds  3x  2s  Verify MQTT Broker Qos
     [Teardown]  Run keywords  Delete device by name ${device_name}
                 ...      AND  Delete all events by age
                 ...      AND  Set MessageBus Optional/Qos=0 For core-data On Consul
@@ -62,14 +62,15 @@ Create An Event With ${device_name} and command ${command_name}
 Verify MQTT Broker Qos
     ${timestamp}=  Evaluate  int(${log_timestamp})-30
     ${logs}  Run Process  ${WORK_DIR}/TAF/utils/scripts/${DEPLOY_TYPE}/query-docker-logs.sh mqtt-broker ${timestamp}
-    ...     shell=True  stderr=STDOUT  output_encoding=UTF-8
+    ...     shell=True  stderr=STDOUT  output_encoding=UTF-8  timeout=10s
+    Log  ${logs.stdout}
     Should Contain  ${logs.stdout}  core-data 2 edgex/events/device/#
     ${subscribe_log}  Get Lines Containing String  ${logs.stdout}  Sending PUBLISH to core-data
     Should Contain  ${subscribe_log}   q0  # because device-virtual QoS=0
 
 MQTT Subscriber Received Event is the Same As Service Log
     ${logs}  Run Process  ${WORK_DIR}/TAF/utils/scripts/${DEPLOY_TYPE}/query-docker-logs.sh core-data ${log_timestamp}
-    ...     shell=True  stderr=STDOUT  output_encoding=UTF-8
+    ...     shell=True  stderr=STDOUT  output_encoding=UTF-8  timeout=10s
     ${correlation_line}  Get Lines Containing String  ${logs.stdout}.encode()  Event Published to MessageBus
     ${correlation_id}  Fetch From Right  ${correlation_line}  Correlation-id:
     ${correlation_id}  Fetch From Left  ${correlation_id}  "
