@@ -67,8 +67,7 @@ Create An Event With ${device_name} and command ${command_name}
 
 
 Verify MQTT Broker Qos
-    ${timestamp}=  Evaluate  int(${log_timestamp})-5
-    ${logs}  Run Process  ${WORK_DIR}/TAF/utils/scripts/${DEPLOY_TYPE}/query-docker-logs.sh mqtt-broker ${timestamp}
+    ${logs}  Run Process  ${WORK_DIR}/TAF/utils/scripts/${DEPLOY_TYPE}/query-docker-logs.sh mqtt-broker ${log_timestamp}
     ...     shell=True  stderr=STDOUT  output_encoding=UTF-8  timeout=10s
     Log  ${logs.stdout}
     Should Contain  ${logs.stdout}  core-data 2 edgex/events/device/#
