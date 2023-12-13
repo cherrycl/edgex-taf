@@ -43,11 +43,11 @@ CoreConfig002 - Set core-data MessageBus.Optional.Qos (SUBSCRIBE)
 
 *** Keywords ***
 Set MessageBus ${key}=${value} For core-data On Consul
-    ${timestamp}  get current epoch time
-    Set Test Variable  ${log_timestamp}  ${timestamp}
     ${path}=  Set Variable  ${DATA_CONSOL_PATH}/MessageBus/${key}
     Update Service Configuration On Consul  ${path}  ${value}
     Restart Services  core-data
+    ${timestamp}  get current epoch time
+    Set Test Variable  ${log_timestamp}  ${timestamp}
 
 Event Has Been Recevied By MQTT Subscriber
     ${received_event}  Get file  ${WORK_DIR}/TAF/testArtifacts/logs/${subscriber_file}
