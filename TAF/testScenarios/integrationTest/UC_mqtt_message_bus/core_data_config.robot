@@ -4,6 +4,7 @@ Resource     TAF/testCaseModules/keywords/common/commonKeywords.robot
 Resource  TAF/testCaseModules/keywords/device-sdk/deviceServiceAPI.robot
 Suite Setup  Run Keywords  Setup Suite
 ...                        AND  Run Keyword if  $SECURITY_SERVICE_NEEDED == 'true'  Get Token
+...                        AND  Delete all events by age
 ...                        AND  Run Keyword And Ignore Error  Stop Services  app-scalability-test-mqtt-export  app-mqtt-export  # No data received from the both services
 Suite Teardown  Run Keywords  Run Teardown Keywords
 ...             AND  Terminate All Processes  kill=True
@@ -43,11 +44,17 @@ CoreConfig002 - Set core-data MessageBus.Optional.Qos (SUBSCRIBE)
 
 *** Keywords ***
 Set MessageBus ${key}=${value} For core-data On Consul
+    ${timestamp}  get current epoch time
+    Set Test Variable  ${log_timestamp}  ${timestamp}
     ${path}=  Set Variable  ${DATA_CONSOL_PATH}/MessageBus/${key}
     Update Service Configuration On Consul  ${path}  ${value}
     Restart Services  core-data
-    ${timestamp}  get current epoch time
-    Set Test Variable  ${log_timestamp}  ${timestamp}
+    Wait Until Keyword Succeeds  10x  1s  Ping Data Service
+
+Ping Data Service
+    Set Test Variable  ${url}  ${coreDataUrl}
+    Query Ping
+    Should return status code "200"
 
 Event Has Been Recevied By MQTT Subscriber
     ${received_event}  Get file  ${WORK_DIR}/TAF/testArtifacts/logs/${subscriber_file}
@@ -60,7 +67,7 @@ Create An Event With ${device_name} and command ${command_name}
 
 
 Verify MQTT Broker Qos
-    ${timestamp}=  Evaluate  int(${log_timestamp})-30
+    ${timestamp}=  Evaluate  int(${log_timestamp})-5
     ${logs}  Run Process  ${WORK_DIR}/TAF/utils/scripts/${DEPLOY_TYPE}/query-docker-logs.sh mqtt-broker ${timestamp}
     ...     shell=True  stderr=STDOUT  output_encoding=UTF-8  timeout=10s
     Log  ${logs.stdout}
