@@ -125,7 +125,7 @@ cd edgex-taf
 docker run --rm -d --name TAF --network host -v ${PWD}:${PWD} -w ${PWD} \
         -e COMPOSE_IMAGE=${COMPOSE_IMAGE} -e ARCH=${ARCH} \
         -e SECURITY_SERVICE_NEEDED=${SECURITY_SERVICE_NEEDED} \
-        -v /var/run/docker.sock:/var/run/docker.sock \
+        -v ${DOCKER_SOCKET_PATH}:/var/run/docker.sock \
         --name TAF ${EDGEX_TAF_IMAGE} \
         --exclude Skipped -u scalabilityTest/modbus -p modbus_scalability_test
 ```
@@ -146,7 +146,7 @@ And run test via docker command:
 docker run --rm -d --name TAF --network host -v ${PWD}:${PWD} -w ${PWD} \
         -e COMPOSE_IMAGE=${COMPOSE_IMAGE} -e ARCH=${ARCH} \
         -e SECURITY_SERVICE_NEEDED=${SECURITY_SERVICE_NEEDED} \
-        -v /var/run/docker.sock:/var/run/docker.sock \
+        -v ${DOCKER_SOCKET_PATH}:/var/run/docker.sock \
         -v /proc:/host/proc \
         --name TAF ${EDGEX_TAF_IMAGE} \
         --exclude Skipped -u scalabilityTest/modbus -p modbus_scalability_test
@@ -161,7 +161,7 @@ or
 docker run --rm --network host -v ${PWD}:${PWD} -w ${PWD} \
         -e COMPOSE_IMAGE=${COMPOSE_IMAGE} -e ARCH=${ARCH} \
         -e SECURITY_SERVICE_NEEDED=${SECURITY_SERVICE_NEEDED} \
-        -v /var/run/docker.sock:/var/run/docker.sock \
+        -v ${DOCKER_SOCKET_PATH}:/var/run/docker.sock \
         --name TAF ${EDGEX_TAF_IMAGE} \
         --exclude Skipped --include shutdown-edgex -u shutdown.robot -p modbus_scalability_test
 ```

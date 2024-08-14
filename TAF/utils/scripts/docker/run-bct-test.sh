@@ -79,21 +79,21 @@ sh get-compose-file.sh ${USE_ARCH} ${USE_SECURITY} jakarta ${TEST_STRATEGY}
 docker run --rm --network host -v ${WORK_DIR}:${WORK_DIR}:z -w ${WORK_DIR} \
     -e COMPOSE_IMAGE=${COMPOSE_IMAGE} -e SECURITY_SERVICE_NEEDED=${SECURITY_SERVICE_NEEDED} \
     --security-opt label:disable \
-    -v /var/run/docker.sock:/var/run/docker.sock ${TAF_COMMON_IMAGE} \
+    -v ${DOCKER_SOCKET_PATH}:/var/run/docker.sock ${TAF_COMMON_IMAGE} \
     --exclude Skipped --include ${RUN_TAG} -u deploy.robot -p default
 cp ${WORK_DIR}/TAF/testArtifacts/reports/edgex/log.html ${WORK_DIR}/TAF/testArtifacts/reports/cp-edgex/deploy-base-${BUS}.html
 
 docker run --rm --network host -v ${WORK_DIR}:${WORK_DIR}:z -w ${WORK_DIR} \
     -e COMPOSE_IMAGE=${COMPOSE_IMAGE} -e ARCH=${ARCH} --security-opt label:disable \
     -e SECURITY_SERVICE_NEEDED=${SECURITY_SERVICE_NEEDED} \
-    -v /tmp/edgex/secrets:/tmp/edgex/secrets:z -v /var/run/docker.sock:/var/run/docker.sock \
+    -v /tmp/edgex/secrets:/tmp/edgex/secrets:z -v ${DOCKER_SOCKET_PATH}:/var/run/docker.sock \
     --env-file ${WORK_DIR}/TAF/utils/scripts/docker/common-taf.env ${TAF_COMMON_IMAGE} \
     --exclude Skipped --exclude backward-skip --include MessageBus=${BUS} \
     -u integrationTest -p device-virtual
 cp ${WORK_DIR}/TAF/testArtifacts/reports/edgex/log.html ${WORK_DIR}/TAF/testArtifacts/reports/cp-edgex/jakarta-${BUS}.html
 
 docker run --rm --network host -v ${WORK_DIR}:${WORK_DIR}:z -w ${WORK_DIR} \
-    -e CONFIG_DIR=/custom-config --security-opt label:disable -v /var/run/docker.sock:/var/run/docker.sock \
+    -e CONFIG_DIR=/custom-config --security-opt label:disable -v ${DOCKER_SOCKET_PATH}:/var/run/docker.sock \
     ${COMPOSE_IMAGE} docker compose -f ${WORK_DIR}/TAF/utils/scripts/docker/docker-compose.yml down
 
 # Get Backward Compose file
@@ -103,14 +103,14 @@ sh get-compose-file-backward.sh ${USE_ARCH} ${USE_SECURITY} ${COMPATIBLE_RELEASE
 docker run --rm --network host -v ${WORK_DIR}:${WORK_DIR}:z -w ${WORK_DIR} \
     -e COMPOSE_IMAGE=${COMPOSE_IMAGE} -e SECURITY_SERVICE_NEEDED=${SECURITY_SERVICE_NEEDED} \
     --security-opt label:disable \
-    -v /var/run/docker.sock:/var/run/docker.sock ${TAF_COMMON_IMAGE} \
+    -v ${DOCKER_SOCKET_PATH}:/var/run/docker.sock ${TAF_COMMON_IMAGE} \
     --exclude Skipped --include ${RUN_TAG} -u deploy.robot -p default
 cp ${WORK_DIR}/TAF/testArtifacts/reports/edgex/log.html ${WORK_DIR}/TAF/testArtifacts/reports/cp-edgex/bct-deploy-base-${BUS}.html
 
 docker run --rm --network host -v ${WORK_DIR}:${WORK_DIR}:z -w ${WORK_DIR} \
     -e COMPOSE_IMAGE=${COMPOSE_IMAGE} -e ARCH=${ARCH} --security-opt label:disable \
     -e SECURITY_SERVICE_NEEDED=${SECURITY_SERVICE_NEEDED} \
-    -v /tmp/edgex/secrets:/tmp/edgex/secrets:z -v /var/run/docker.sock:/var/run/docker.sock \
+    -v /tmp/edgex/secrets:/tmp/edgex/secrets:z -v ${DOCKER_SOCKET_PATH}:/var/run/docker.sock \
     --env-file ${WORK_DIR}/TAF/utils/scripts/docker/common-taf.env ${TAF_COMMON_IMAGE} \
     --exclude Skipped --exclude backward-skip --include MessageBus=${BUS} \
     -u integrationTest -p device-virtual
@@ -118,5 +118,5 @@ cp ${WORK_DIR}/TAF/testArtifacts/reports/edgex/log.html ${WORK_DIR}/TAF/testArti
 
 docker run --rm --network host -v ${WORK_DIR}:${WORK_DIR}:z -w ${WORK_DIR} \
     --security-opt label:disable -e COMPOSE_IMAGE=${COMPOSE_IMAGE} -e ARCH=${ARCH} \
-    -v /var/run/docker.sock:/var/run/docker.sock ${TAF_COMMON_IMAGE} \
+    -v ${DOCKER_SOCKET_PATH}:/var/run/docker.sock ${TAF_COMMON_IMAGE} \
     --exclude Skipped --include shutdown-edgex -u shutdown.robot -p device-virtual
