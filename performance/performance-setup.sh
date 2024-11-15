@@ -73,7 +73,7 @@ if [ "${OPTION}" = "deploy" ]; then
     done
     run_compose -f docker-compose-simulators.yml up -d
 
-  elif [ "${MACHINE}" = "report-server" ]; then
+  elif [ "${MACHINE}" = "report_server" ]; then
     run_compose -f docker-compose-report.yml up -d
   else
     echo "MACHINE values: edgex, simulator, report_server"
