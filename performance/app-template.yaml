@@ -1,0 +1,58 @@
+Writable:
+  LogLevel: "INFO"
+  StoreAndForward:
+    Enabled: false
+
+  Pipeline:
+    ExecutionOrder: "MQTTExport"
+
+    Functions:
+      MQTTExport:
+        Parameters:
+          BrokerAddress: BROKER_ADDRESS
+          Topic: "edgex/events/device/PROFILE_NAME"
+          SecretName: "mqtt"
+          ClientId: "MQTT-Export_APP_INDEX"
+          QOS: "0"
+          AutoReconnect: "true"
+          MaxReconnectInterval: "" # Empty value means use default setting
+          KeepAlive: "" # Empty indicates to use default value
+          ConnectTimeout: "" # Empty indicates to use default value
+          Retain: "false"
+          SkipVerify: "false"
+          AuthMode: "none"
+          PersistOnError: "false"
+          WillEnabled: "false"
+          WillPayload: ""
+          WillQos: "0"
+          WillRetained: "false"
+          WillTopic: ""
+          PreConnect: "true"
+          PreConnectRetryCount: "" # Empty value means use default setting
+          PreConnectRetryInterval: "" # Empty value means use default setting
+
+  InsecureSecrets:
+    mqtt:
+      SecretName: "mqtt"
+      SecretData:
+        username: ""
+        password: ""
+        cacert: ""
+        clientcert: ""
+        clientkey: ""
+    aes:
+      SecretName: "aes"
+      SecretData:
+        key: "217A24432646294A404E635266556A586E3272357538782F413F442A472D4B6150645367566B59703373367639792442264529482B4D6251655468576D5A7134"
+
+Service:
+  Host: "localhost"
+  Port: 59703
+  StartupMsg: "app-mqtt-export_APP_INDEX has Started"
+
+MessageBus:
+  Optional:
+    ClientId: "app-mqtt-export_APP_INDEX"
+
+Trigger:
+  SubscribeTopics: "edgex/events/device/PROFILE_NAME/#"

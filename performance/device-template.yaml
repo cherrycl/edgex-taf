@@ -1,0 +1,22 @@
+# Pre-define Devices
+deviceList:
+  - name: PROFILE_NAME-DEVICE_INDEX
+    ProfileName: PROFILE_NAME
+    ProtocolName: modbus-tcp
+
+  autoEvents:
+    - interval: 1s
+      onChange: true
+      sourceName: bc_1
+    - interval: 1s
+      onChange: true
+      sourceName: 16c_1
+    - interval: 1s
+      onChange: true
+      sourceName: 32c_1
+
+  protocols:
+    modbus-tcp:
+      Address: SIMULATOR_IP
+      Port: SIMULATOR_PORT
+      UnitID: SIMULATOR_UNIT
