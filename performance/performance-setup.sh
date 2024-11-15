@@ -31,12 +31,13 @@ if [ "${OPTION}" = "deploy" ]; then
       # Update app-service compose file
       cp app-service.yml app_conf/app-sample-${n}.yml
       sed -i "s/INDEX/${n}/g" app_conf/app-sample-${n}.yml
+      sed -i "/services:/ r app_conf/app-sample-${n}.yml" docker-compose-main.yml
 
       # Update app-service configuration YAML file
       mkdir -p app_conf/mqtt-sample-${n}
       cp app-template.yaml app_conf/mqtt-sample-${n}/configuration.yaml
       sed -i "s/PROFILE_NAME/device-sim-${n}/g" app_conf/mqtt-sample-${n}/configuration.yaml
-      sed -i "s/BROKER_ADDRESS/${REPORT_SERVER_IP}:${BROKER_PORT}/g" app_conf/mqtt-sample-${n}/configuration.yaml
+      sed -i "s/BROKER_ADDRESS/tcp:\/\/${REPORT_SERVER_IP}:${BROKER_PORT}/g" app_conf/mqtt-sample-${n}/configuration.yaml
       sed -i "s/APP_INDEX/${n}/g" app_conf/mqtt-sample-${n}/configuration.yaml
 
       # Generate devices.yaml

@@ -34,7 +34,7 @@
         bind:
           create_host_path: true
       - type: bind
-        source: ${WORK_DIR}/app-conf/mqtt-sample_INDEX
+        source: ${PWD}/app-conf/mqtt-sample_INDEX
         tartget: /res/mqtt-sample_INDEX
         read_only: true
         bind:
