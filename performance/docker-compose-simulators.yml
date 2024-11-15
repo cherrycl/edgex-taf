@@ -1,17 +1,4 @@
 services:
-  core-metadata:
-    environment:
-      SERVICE_REQUESTTIMEOUT: "30s"
-  device-modbus:
-    environment:
-      DEVICE_PROFILESDIR: /res/edgex/profiles
-      DEVICE_DEVICESDIR: /res/edgex/devices
-    volumes:
-      - ${WORK_DIR}/simulators:/res/edgex
-
-  #############################################
-  # Simulators
-  #############################################
   device-sim-1:
     command:
       - pymodbus.server

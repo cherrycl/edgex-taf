@@ -39,6 +39,8 @@ services:
     environment:
       EDGEX_SECURITY_SECRET_STORE: "false"
       SERVICE_HOST: edgex-device-modbus
+      DEVICE_PROFILESDIR: /res/edgex/profiles
+      DEVICE_DEVICESDIR: /res/edgex/devices
     hostname: edgex-device-modbus
     image: nexus3.edgexfoundry.org:10004/device-modbus:latest
     networks:
@@ -61,3 +63,13 @@ services:
         read_only: true
         bind:
           create_host_path: true
+      - type: bind
+        source: ${PWD}/simulators
+        target: /res/edgex
+        read_only: true
+        bind:
+          create_host_path: true
+
+  core-metadata:
+    environment:
+      SERVICE_REQUESTTIMEOUT: "30s"

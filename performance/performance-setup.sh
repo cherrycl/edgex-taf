@@ -84,12 +84,12 @@ elif [ "${OPTION}" = "shutdown" ]; then
     run_compose down -v
     rm -rf app_conf simulators/devices
 
-  if [ "${MACHINE}" = "simulator" ]; then
+  elif [ "${MACHINE}" = "simulator" ]; then
     run_compose -f docker-compose-simulators.yml down -v
 
   elif [ "${MACHINE}" = "report_server" ]; then
     run_compose -f docker-compose-report.yml down -v
-
+  fi
 else
     echo "OPTION values: deploy, shutdown"
 fi
