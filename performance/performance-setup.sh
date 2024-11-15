@@ -82,7 +82,7 @@ if [ "${OPTION}" = "deploy" ]; then
   
 elif [ "${OPTION}" = "shutdown" ]; then
   if [ "${MACHINE}" = "edgex" ]; then
-    run_compose down -v
+    run_compose -f docker-compose.yml -f docker-compose-main.yml down -v
     rm -rf app_conf simulators/devices
 
   elif [ "${MACHINE}" = "simulator" ]; then
