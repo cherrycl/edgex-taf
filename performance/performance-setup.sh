@@ -6,6 +6,12 @@ SECURITY=${3:-}  # Options: true, false
 
 . "$(dirname "$0")/config.env"
 
+# Get HOST_DOCKER_GROUP_ID for telegraf service
+DOCKER_ID=$(docker run --rm -v /etc/group:/etc/host/group --entrypoint cat \
+       docker:26.0.1 /etc/host/group | grep docker)
+HOST_DOCKER_GROUP_ID=$(echo $DOCKER_ID | cut -d : -f 3)
+
+
 run_compose() {
   echo "Run compose command with arguments: $@"
 
