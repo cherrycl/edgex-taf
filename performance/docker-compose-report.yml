@@ -35,6 +35,8 @@ services:
     hostname: influxdb
     networks:
       edgex-network: null
+    ports:
+      - "8086:8086"
     restart: always
     user: influxdb:influxdb
     environment:

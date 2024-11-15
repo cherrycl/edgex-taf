@@ -33,6 +33,7 @@ if [ "${OPTION}" = "deploy" ]; then
       sed -i "s/INDEX/${n}/g" app_conf/app-sample-${n}.yml
 
       # Update app-service configuration YAML file
+      mkdir -p app_conf/mqtt-sample-${n}
       cp app-template.yaml app_conf/mqtt-sample-${n}/configuration.yaml
       sed -i "s/PROFILE_NAME/device-sim-${n}/g" app_conf/mqtt-sample-${n}/configuration.yaml
       sed -i "s/BROKER_ADDRESS/${REPORT_SERVER_IP}:${BROKER_PORT}/g" app_conf/mqtt-sample-${n}/configuration.yaml
