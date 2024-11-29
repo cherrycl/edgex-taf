@@ -122,6 +122,7 @@ services = services.stdout.strip().split('\n')
 remove_device_sim = [name for name in services if 'device-sim' not in name]
 remove_service = ['telegraf', 'influxdb', 'grafana', 'core-keeper', 'external-mqtt-broker']
 service_list = [i for i in remove_device_sim if i not in remove_service]
+service_list = [sub.replace('edgex-', '') for sub in service_list]
 
 row = {'aggregation': ['min', 'max', 'avg']}
 container_cpu_agg = pd.DataFrame(row)
