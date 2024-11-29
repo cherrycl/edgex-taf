@@ -16,3 +16,5 @@
         Address: SIMULATOR_IP
         Port: SIMULATOR_PORT
         UnitID: SIMULATOR_UNIT
+        Timeout: 5
+        IdleTimeout: 5
