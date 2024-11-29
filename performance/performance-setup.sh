@@ -35,7 +35,7 @@ if [ "${OPTION}" = "deploy" ]; then
       sed -i "/^\ \ ${service}:/,/^  [a-z].*:$/{//!d}; /^\ \ ${service}:/d" docker-compose.yml
     done
 
-    if [ -z "$(ls -A app_conf)" ] && [ -z "$(ls -A simulators/devices)" ]; then
+    if [ ! -d app_conf ] || [ ! -d  simulators/devices ]; then
       # Generate app-service configuration files
       mkdir -p app_conf simulators/devices
       SIMULATOR_PORT=5020  # Define the first simulator default port
