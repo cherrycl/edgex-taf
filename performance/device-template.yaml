@@ -1,5 +1,3 @@
-# Pre-define Devices
-deviceList:
   - name: PROFILE_NAME-DEVICE_INDEX
     ProfileName: PROFILE_NAME
     ProtocolName: modbus-tcp

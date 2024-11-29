@@ -60,6 +60,7 @@ if [ "${OPTION}" = "deploy" ]; then
           cat device-template.yaml >> simulators/devices/device-sim-${n}.yaml
           sed -i "s/DEVICE_INDEX/${i}/g" simulators/devices/device-sim-${n}.yaml
         done
+        sed -i '1 i\deviceList:' simulators/devices/device-sim-${n}.yaml
         sed -i "s/PROFILE_NAME/device-sim-${n}/g" simulators/devices/device-sim-${n}.yaml
         sed -i "s/SIMULATOR_IP/${SIMULATOR_IP}/g" simulators/devices/device-sim-${n}.yaml
         sed -i "s/SIMULATOR_PORT/${SIMULATOR_PORT}/g" simulators/devices/device-sim-${n}.yaml
