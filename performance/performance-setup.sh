@@ -29,7 +29,11 @@ if [ "${OPTION}" = "deploy" ]; then
     sh influx_grafana_request.sh
 
     sh sync-compose-file.sh ${SECURITY}
-
+    # Removed unused service
+    unused_services="device-virtual device-rest app-rules-engine app-mqtt-export taf-mqtt-broker kuiper ui-go"
+    for service in $unused_services; do
+      sed -i "/^\ \ ${service}:/,/^  [a-z].*:$/{//!d}; /^\ \ ${service}:/d" docker-compose.yml
+    done
 
     if [ -z "$(ls -A app_conf)" ] && [ -z "$(ls -A simulators/devices)" ]; then
       # Generate app-service configuration files
