@@ -1,331 +1,250 @@
 services:
-  device-sim-1:
-    command:
-      - pymodbus.server
-      - --host
-      - 0.0.0.0
-      - --no-repl
-      - run
-      - --modbus-server
-      - tcp
-      - --modbus-port
-      - "5020"
-      - --framer
-      - socket
-      - --modbus-config
-      - /res/config.json
-      - --unit-id
-      - "1"
-      - --change-rate
-      - "0"
-    container_name: device-sim-1
-    image: iotechsys/modbus-sim:repl-v3.1.0
+  modbus-simulator-1:
+    container_name: edgex-modbus-simulator-1
+    hostname: edgex-modbus-simulator-1
+    image: nexus3.edgexfoundry.org:10003/edgex-devops/edgex-modbus-simulator:latest
+    networks:
+      edgex-network: null
+    ports:
+      - mode: ingress
+        host_ip: 0.0.0.0
+        target: 1502
+        published: "1500"
+        protocol: tcp
+    read_only: true
     restart: always
-    logging:
-      driver: json-file
-      options:
-        max-file: "5"
-        max-size: 10mb
-    network_mode: host
+    security_opt:
+      - no-new-privileges:true
+    user: 2002:2001
     volumes:
       - type: bind
-        source: ${WORK_DIR}/simulators/pymodbus-config/device-sim-1.json
-        target: /res/config.json
+        source: /etc/localtime
+        target: /etc/localtime
         read_only: true
-  device-sim-2:
-    command:
-      - pymodbus.server
-      - --host
-      - 0.0.0.0
-      - --no-repl
-      - run
-      - --modbus-server
-      - tcp
-      - --modbus-port
-      - "5021"
-      - --framer
-      - socket
-      - --modbus-config
-      - /res/config.json
-      - --unit-id
-      - "2"
-      - --change-rate
-      - "0"
-    container_name: device-sim-2
-    image: iotechsys/modbus-sim:repl-v3.1.0
+        bind:
+          create_host_path: true
+
+  modbus-simulator-2:
+    container_name: edgex-modbus-simulator-2
+    hostname: edgex-modbus-simulator-2
+    image: nexus3.edgexfoundry.org:10003/edgex-devops/edgex-modbus-simulator:latest
+    networks:
+      edgex-network: null
+    ports:
+      - mode: ingress
+        host_ip: 0.0.0.0
+        target: 1502
+        published: "1501"
+        protocol: tcp
+    read_only: true
     restart: always
-    logging:
-      driver: json-file
-      options:
-        max-file: "5"
-        max-size: 10mb
-    network_mode: host
+    security_opt:
+      - no-new-privileges:true
+    user: 2002:2001
     volumes:
       - type: bind
-        source: ${WORK_DIR}/simulators/pymodbus-config/device-sim-2.json
-        target: /res/config.json
+        source: /etc/localtime
+        target: /etc/localtime
         read_only: true
-  device-sim-3:
-    command:
-      - pymodbus.server
-      - --host
-      - 0.0.0.0
-      - --no-repl
-      - run
-      - --modbus-server
-      - tcp
-      - --modbus-port
-      - "5022"
-      - --framer
-      - socket
-      - --modbus-config
-      - /res/config.json
-      - --unit-id
-      - "3"
-      - --change-rate
-      - "0"
-    container_name: device-sim-3
-    image: iotechsys/modbus-sim:repl-v3.1.0
+        bind:
+          create_host_path: true
+
+  modbus-simulator-3:
+    container_name: edgex-modbus-simulator-3
+    hostname: edgex-modbus-simulator-3
+    image: nexus3.edgexfoundry.org:10003/edgex-devops/edgex-modbus-simulator:latest
+    networks:
+      edgex-network: null
+    ports:
+      - mode: ingress
+        host_ip: 0.0.0.0
+        target: 1502
+        published: "1502"
+        protocol: tcp
+    read_only: true
     restart: always
-    logging:
-      driver: json-file
-      options:
-        max-file: "5"
-        max-size: 10mb
-    network_mode: host
+    security_opt:
+      - no-new-privileges:true
+    user: 2002:2001
     volumes:
       - type: bind
-        source: ${WORK_DIR}/simulators/pymodbus-config/device-sim-3.json
-        target: /res/config.json
+        source: /etc/localtime
+        target: /etc/localtime
         read_only: true
-  device-sim-4:
-    command:
-      - pymodbus.server
-      - --host
-      - 0.0.0.0
-      - --no-repl
-      - run
-      - --modbus-server
-      - tcp
-      - --modbus-port
-      - "5023"
-      - --framer
-      - socket
-      - --modbus-config
-      - /res/config.json
-      - --unit-id
-      - "4"
-      - --change-rate
-      - "0"
-    container_name: device-sim-4
-    image: iotechsys/modbus-sim:repl-v3.1.0
+        bind:
+          create_host_path: true
+
+  modbus-simulator-4:
+    container_name: edgex-modbus-simulator-4
+    hostname: edgex-modbus-simulator-4
+    image: nexus3.edgexfoundry.org:10003/edgex-devops/edgex-modbus-simulator:latest
+    networks:
+      edgex-network: null
+    ports:
+      - mode: ingress
+        host_ip: 0.0.0.0
+        target: 1502
+        published: "1503"
+        protocol: tcp
+    read_only: true
     restart: always
-    logging:
-      driver: json-file
-      options:
-        max-file: "5"
-        max-size: 10mb
-    network_mode: host
+    security_opt:
+      - no-new-privileges:true
+    user: 2002:2001
     volumes:
       - type: bind
-        source: ${WORK_DIR}/simulators/pymodbus-config/device-sim-4.json
-        target: /res/config.json
+        source: /etc/localtime
+        target: /etc/localtime
         read_only: true
-  device-sim-5:
-    command:
-      - pymodbus.server
-      - --host
-      - 0.0.0.0
-      - --no-repl
-      - run
-      - --modbus-server
-      - tcp
-      - --modbus-port
-      - "5024"
-      - --framer
-      - socket
-      - --modbus-config
-      - /res/config.json
-      - --unit-id
-      - "5"
-      - --change-rate
-      - "0"
-    container_name: device-sim-5
-    image: iotechsys/modbus-sim:repl-v3.1.0
+        bind:
+          create_host_path: true
+
+  modbus-simulator-5:
+    container_name: edgex-modbus-simulator-5
+    hostname: edgex-modbus-simulator-5
+    image: nexus3.edgexfoundry.org:10003/edgex-devops/edgex-modbus-simulator:latest
+    networks:
+      edgex-network: null
+    ports:
+      - mode: ingress
+        host_ip: 0.0.0.0
+        target: 1502
+        published: "1504"
+        protocol: tcp
+    read_only: true
     restart: always
-    logging:
-      driver: json-file
-      options:
-        max-file: "5"
-        max-size: 10mb
-    network_mode: host
+    security_opt:
+      - no-new-privileges:true
+    user: 2002:2001
     volumes:
       - type: bind
-        source: ${WORK_DIR}/simulators/pymodbus-config/device-sim-5.json
-        target: /res/config.json
+        source: /etc/localtime
+        target: /etc/localtime
         read_only: true
-  device-sim-6:
-    command:
-      - pymodbus.server
-      - --host
-      - 0.0.0.0
-      - --no-repl
-      - run
-      - --modbus-server
-      - tcp
-      - --modbus-port
-      - "5025"
-      - --framer
-      - socket
-      - --modbus-config
-      - /res/config.json
-      - --unit-id
-      - "6"
-      - --change-rate
-      - "0"
-    container_name: device-sim-6
-    image: iotechsys/modbus-sim:repl-v3.1.0
+        bind:
+          create_host_path: true
+
+  modbus-simulator-6:
+    container_name: edgex-modbus-simulator-6
+    hostname: edgex-modbus-simulator-6
+    image: nexus3.edgexfoundry.org:10003/edgex-devops/edgex-modbus-simulator:latest
+    networks:
+      edgex-network: null
+    ports:
+      - mode: ingress
+        host_ip: 0.0.0.0
+        target: 1502
+        published: "1505"
+        protocol: tcp
+    read_only: true
     restart: always
-    logging:
-      driver: json-file
-      options:
-        max-file: "5"
-        max-size: 10mb
-    network_mode: host
+    security_opt:
+      - no-new-privileges:true
+    user: 2002:2001
     volumes:
       - type: bind
-        source: ${WORK_DIR}/simulators/pymodbus-config/device-sim-6.json
-        target: /res/config.json
+        source: /etc/localtime
+        target: /etc/localtime
         read_only: true
-  device-sim-7:
-    command:
-      - pymodbus.server
-      - --host
-      - 0.0.0.0
-      - --no-repl
-      - run
-      - --modbus-server
-      - tcp
-      - --modbus-port
-      - "5026"
-      - --framer
-      - socket
-      - --modbus-config
-      - /res/config.json
-      - --unit-id
-      - "7"
-      - --change-rate
-      - "0"
-    container_name: device-sim-7
-    image: iotechsys/modbus-sim:repl-v3.1.0
+        bind:
+          create_host_path: true
+
+  modbus-simulator-7:
+    container_name: edgex-modbus-simulator-7
+    hostname: edgex-modbus-simulator-7
+    image: nexus3.edgexfoundry.org:10003/edgex-devops/edgex-modbus-simulator:latest
+    networks:
+      edgex-network: null
+    ports:
+      - mode: ingress
+        host_ip: 0.0.0.0
+        target: 1502
+        published: "1506"
+        protocol: tcp
+    read_only: true
     restart: always
-    logging:
-      driver: json-file
-      options:
-        max-file: "5"
-        max-size: 10mb
-    network_mode: host
+    security_opt:
+      - no-new-privileges:true
+    user: 2002:2001
     volumes:
       - type: bind
-        source: ${WORK_DIR}/simulators/pymodbus-config/device-sim-7.json
-        target: /res/config.json
+        source: /etc/localtime
+        target: /etc/localtime
         read_only: true
-  device-sim-8:
-    command:
-      - pymodbus.server
-      - --host
-      - 0.0.0.0
-      - --no-repl
-      - run
-      - --modbus-server
-      - tcp
-      - --modbus-port
-      - "5027"
-      - --framer
-      - socket
-      - --modbus-config
-      - /res/config.json
-      - --unit-id
-      - "8"
-      - --change-rate
-      - "0"
-    container_name: device-sim-8
-    image: iotechsys/modbus-sim:repl-v3.1.0
+        bind:
+          create_host_path: true
+
+  modbus-simulator-8:
+    container_name: edgex-modbus-simulator-8
+    hostname: edgex-modbus-simulator-8
+    image: nexus3.edgexfoundry.org:10003/edgex-devops/edgex-modbus-simulator:latest
+    networks:
+      edgex-network: null
+    ports:
+      - mode: ingress
+        host_ip: 0.0.0.0
+        target: 1502
+        published: "1507"
+        protocol: tcp
+    read_only: true
     restart: always
-    logging:
-      driver: json-file
-      options:
-        max-file: "5"
-        max-size: 10mb
-    network_mode: host
+    security_opt:
+      - no-new-privileges:true
+    user: 2002:2001
     volumes:
       - type: bind
-        source: ${WORK_DIR}/simulators/pymodbus-config/device-sim-8.json
-        target: /res/config.json
+        source: /etc/localtime
+        target: /etc/localtime
         read_only: true
-  device-sim-9:
-    command:
-      - pymodbus.server
-      - --host
-      - 0.0.0.0
-      - --no-repl
-      - run
-      - --modbus-server
-      - tcp
-      - --modbus-port
-      - "5028"
-      - --framer
-      - socket
-      - --modbus-config
-      - /res/config.json
-      - --unit-id
-      - "9"
-      - --change-rate
-      - "0"
-    container_name: device-sim-9
-    image: iotechsys/modbus-sim:repl-v3.1.0
+        bind:
+          create_host_path: true
+
+  modbus-simulator-9:
+    container_name: edgex-modbus-simulator-9
+    hostname: edgex-modbus-simulator-9
+    image: nexus3.edgexfoundry.org:10003/edgex-devops/edgex-modbus-simulator:latest
+    networks:
+      edgex-network: null
+    ports:
+      - mode: ingress
+        host_ip: 0.0.0.0
+        target: 1502
+        published: "1508"
+        protocol: tcp
+    read_only: true
     restart: always
-    logging:
-      driver: json-file
-      options:
-        max-file: "5"
-        max-size: 10mb
-    network_mode: host
+    security_opt:
+      - no-new-privileges:true
+    user: 2002:2001
     volumes:
       - type: bind
-        source: ${WORK_DIR}/simulators/pymodbus-config/device-sim-9.json
-        target: /res/config.json
+        source: /etc/localtime
+        target: /etc/localtime
         read_only: true
-  device-sim-10:
-    command:
-      - pymodbus.server
-      - --host
-      - 0.0.0.0
-      - --no-repl
-      - run
-      - --modbus-server
-      - tcp
-      - --modbus-port
-      - "5029"
-      - --framer
-      - socket
-      - --modbus-config
-      - /res/config.json
-      - --unit-id
-      - "10"
-      - --change-rate
-      - "0"
-    container_name: device-sim-10
-    image: iotechsys/modbus-sim:repl-v3.1.0
+        bind:
+          create_host_path: true
+
+  modbus-simulator-10:
+    container_name: edgex-modbus-simulator-10
+    hostname: edgex-modbus-simulator-10
+    image: nexus3.edgexfoundry.org:10003/edgex-devops/edgex-modbus-simulator:latest
+    networks:
+      edgex-network: null
+    ports:
+      - mode: ingress
+        host_ip: 0.0.0.0
+        target: 1502
+        published: "1509"
+        protocol: tcp
+    read_only: true
     restart: always
-    logging:
-      driver: json-file
-      options:
-        max-file: "5"
-        max-size: 10mb
-    network_mode: host
+    security_opt:
+      - no-new-privileges:true
+    user: 2002:2001
     volumes:
       - type: bind
-        source: ${WORK_DIR}/simulators/pymodbus-config/device-sim-10.json
-        target: /res/config.json
+        source: /etc/localtime
+        target: /etc/localtime
         read_only: true
+        bind:
+          create_host_path: true
