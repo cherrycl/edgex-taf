@@ -38,7 +38,6 @@ if [ "${OPTION}" = "deploy" ]; then
     if [ ! -d app_conf ] || [ ! -d  simulators/devices ]; then
       # Generate app-service configuration files
       mkdir -p app_conf simulators/devices
-      SIMULATOR_PORT=5020  # Define the first simulator default port
 
       for n in $(seq 1 ${APP_SERVICE_COUNT})
       do
