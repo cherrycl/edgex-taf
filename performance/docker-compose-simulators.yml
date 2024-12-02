@@ -1,7 +1,7 @@
 services:
-  modbus-simulator-1:
-    container_name: edgex-modbus-simulator-1
-    hostname: edgex-modbus-simulator-1
+  device-sim-1:
+    container_name: device-sim-1
+    hostname: device-sim-1
     image: nexus3.edgexfoundry.org:10003/edgex-devops/edgex-modbus-simulator:latest
     networks:
       edgex-network: null
@@ -24,9 +24,9 @@ services:
         bind:
           create_host_path: true
 
-  modbus-simulator-2:
-    container_name: edgex-modbus-simulator-2
-    hostname: edgex-modbus-simulator-2
+  device-sim-2:
+    container_name: device-sim-2
+    hostname: device-sim-2
     image: nexus3.edgexfoundry.org:10003/edgex-devops/edgex-modbus-simulator:latest
     networks:
       edgex-network: null
@@ -49,9 +49,9 @@ services:
         bind:
           create_host_path: true
 
-  modbus-simulator-3:
-    container_name: edgex-modbus-simulator-3
-    hostname: edgex-modbus-simulator-3
+  device-sim-3:
+    container_name: device-sim-3
+    hostname: device-sim-3
     image: nexus3.edgexfoundry.org:10003/edgex-devops/edgex-modbus-simulator:latest
     networks:
       edgex-network: null
@@ -74,9 +74,9 @@ services:
         bind:
           create_host_path: true
 
-  modbus-simulator-4:
-    container_name: edgex-modbus-simulator-4
-    hostname: edgex-modbus-simulator-4
+  device-sim-4:
+    container_name: device-sim-4
+    hostname: device-sim-4
     image: nexus3.edgexfoundry.org:10003/edgex-devops/edgex-modbus-simulator:latest
     networks:
       edgex-network: null
@@ -99,9 +99,9 @@ services:
         bind:
           create_host_path: true
 
-  modbus-simulator-5:
-    container_name: edgex-modbus-simulator-5
-    hostname: edgex-modbus-simulator-5
+  device-sim-5:
+    container_name: device-sim-5
+    hostname: device-sim-5
     image: nexus3.edgexfoundry.org:10003/edgex-devops/edgex-modbus-simulator:latest
     networks:
       edgex-network: null
@@ -124,9 +124,9 @@ services:
         bind:
           create_host_path: true
 
-  modbus-simulator-6:
-    container_name: edgex-modbus-simulator-6
-    hostname: edgex-modbus-simulator-6
+  device-sim-6:
+    container_name: device-sim-6
+    hostname: device-sim-6
     image: nexus3.edgexfoundry.org:10003/edgex-devops/edgex-modbus-simulator:latest
     networks:
       edgex-network: null
@@ -149,9 +149,9 @@ services:
         bind:
           create_host_path: true
 
-  modbus-simulator-7:
-    container_name: edgex-modbus-simulator-7
-    hostname: edgex-modbus-simulator-7
+  device-sim-7:
+    container_name: device-sim-7
+    hostname: device-sim-7
     image: nexus3.edgexfoundry.org:10003/edgex-devops/edgex-modbus-simulator:latest
     networks:
       edgex-network: null
@@ -174,9 +174,9 @@ services:
         bind:
           create_host_path: true
 
-  modbus-simulator-8:
-    container_name: edgex-modbus-simulator-8
-    hostname: edgex-modbus-simulator-8
+  device-sim-8:
+    container_name: device-sim-8
+    hostname: device-sim-8
     image: nexus3.edgexfoundry.org:10003/edgex-devops/edgex-modbus-simulator:latest
     networks:
       edgex-network: null
@@ -199,9 +199,9 @@ services:
         bind:
           create_host_path: true
 
-  modbus-simulator-9:
-    container_name: edgex-modbus-simulator-9
-    hostname: edgex-modbus-simulator-9
+  device-sim-9:
+    container_name: device-sim-9
+    hostname: device-sim-9
     image: nexus3.edgexfoundry.org:10003/edgex-devops/edgex-modbus-simulator:latest
     networks:
       edgex-network: null
@@ -224,9 +224,9 @@ services:
         bind:
           create_host_path: true
 
-  modbus-simulator-10:
-    container_name: edgex-modbus-simulator-10
-    hostname: edgex-modbus-simulator-10
+  device-sim-10:
+    container_name: device-sim-10
+    hostname: device-sim-10
     image: nexus3.edgexfoundry.org:10003/edgex-devops/edgex-modbus-simulator:latest
     networks:
       edgex-network: null
