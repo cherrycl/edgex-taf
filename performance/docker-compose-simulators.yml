@@ -3,8 +3,7 @@ services:
     container_name: device-sim-1
     hostname: device-sim-1
     image: nexus3.edgexfoundry.org:10003/edgex-devops/edgex-modbus-simulator:latest
-    networks:
-      edgex-network: null
+    network_mode: host
     ports:
       - mode: ingress
         host_ip: 0.0.0.0
@@ -28,8 +27,7 @@ services:
     container_name: device-sim-2
     hostname: device-sim-2
     image: nexus3.edgexfoundry.org:10003/edgex-devops/edgex-modbus-simulator:latest
-    networks:
-      edgex-network: null
+    network_mode: host
     ports:
       - mode: ingress
         host_ip: 0.0.0.0
@@ -53,8 +51,7 @@ services:
     container_name: device-sim-3
     hostname: device-sim-3
     image: nexus3.edgexfoundry.org:10003/edgex-devops/edgex-modbus-simulator:latest
-    networks:
-      edgex-network: null
+    network_mode: host
     ports:
       - mode: ingress
         host_ip: 0.0.0.0
@@ -78,8 +75,7 @@ services:
     container_name: device-sim-4
     hostname: device-sim-4
     image: nexus3.edgexfoundry.org:10003/edgex-devops/edgex-modbus-simulator:latest
-    networks:
-      edgex-network: null
+    network_mode: host
     ports:
       - mode: ingress
         host_ip: 0.0.0.0
@@ -103,8 +99,7 @@ services:
     container_name: device-sim-5
     hostname: device-sim-5
     image: nexus3.edgexfoundry.org:10003/edgex-devops/edgex-modbus-simulator:latest
-    networks:
-      edgex-network: null
+    network_mode: host
     ports:
       - mode: ingress
         host_ip: 0.0.0.0
@@ -128,8 +123,7 @@ services:
     container_name: device-sim-6
     hostname: device-sim-6
     image: nexus3.edgexfoundry.org:10003/edgex-devops/edgex-modbus-simulator:latest
-    networks:
-      edgex-network: null
+    network_mode: host
     ports:
       - mode: ingress
         host_ip: 0.0.0.0
@@ -153,8 +147,7 @@ services:
     container_name: device-sim-7
     hostname: device-sim-7
     image: nexus3.edgexfoundry.org:10003/edgex-devops/edgex-modbus-simulator:latest
-    networks:
-      edgex-network: null
+    network_mode: host
     ports:
       - mode: ingress
         host_ip: 0.0.0.0
@@ -178,8 +171,7 @@ services:
     container_name: device-sim-8
     hostname: device-sim-8
     image: nexus3.edgexfoundry.org:10003/edgex-devops/edgex-modbus-simulator:latest
-    networks:
-      edgex-network: null
+    network_mode: host
     ports:
       - mode: ingress
         host_ip: 0.0.0.0
@@ -203,8 +195,7 @@ services:
     container_name: device-sim-9
     hostname: device-sim-9
     image: nexus3.edgexfoundry.org:10003/edgex-devops/edgex-modbus-simulator:latest
-    networks:
-      edgex-network: null
+    network_mode: host
     ports:
       - mode: ingress
         host_ip: 0.0.0.0
@@ -228,8 +219,7 @@ services:
     container_name: device-sim-10
     hostname: device-sim-10
     image: nexus3.edgexfoundry.org:10003/edgex-devops/edgex-modbus-simulator:latest
-    networks:
-      edgex-network: null
+    network_mode: host
     ports:
       - mode: ingress
         host_ip: 0.0.0.0
