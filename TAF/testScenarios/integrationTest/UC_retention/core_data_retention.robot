@@ -197,7 +197,7 @@ Stored Event Count Over Duration Should Correct
     Query events by device name  ${deviceName}
     FOR  ${INDEX}  IN RANGE  len(${content}[events])
         ${event}  Set Variable  ${content}[events][${INDEX}]
-        IF  "${event}[sourceName]" = "${sourceName}" and ${event}[origin] <= ${compare_time}
+        IF  "${event}[sourceName]" = "${TEST_COMMAND_1}" and ${event}[origin] <= ${compare_time}
             ${count}  Evaluate  ${count} + 1
         END
     END
@@ -238,7 +238,6 @@ Create Events With AutoEvent Interval ${interval}
     Sleep  1s
     Set To Dictionary    ${Device}[0][device][autoEvents][0]  interval=1s
     Update Devices ${Device}
-    Set Test Variable  ${sourceName}  Virtual_DeviceValue_INT8_RW
 
     # Use in keyword "Get Log in ${service}"
     ${current_time}  Get current epoch time
@@ -255,8 +254,6 @@ Create Events With AutoEvent Retention
     sleep  1500ms
     Set To Dictionary    ${Device}[0][device][autoEvents][0]  interval=1s
     Update Devices ${Device}
-    Set Test Variable  ${sourceName}  Virtual_DeviceValue_INT8_RW
-    Set Test Variable  ${sourceName_int16}  Virtual_DeviceValue_INT16_RW
 
     # Use in keyword "Get Log in ${service}"
     ${current_time}  Get current epoch time
