@@ -9,7 +9,7 @@ Suite Setup  Run keywords  Setup Suite
 ...                   AND  Set Telemetry Interval to ${interval}s For ${TEST_SERVICE} On Registry Service
 Suite Teardown  Run keywords  Terminate All Processes
 ...                      AND  Delete all events by age
-...                      AND  Set Telemetry Interval=30s For ${TEST_SERVICE} On Registry Service
+...                      AND  Set Telemetry Interval to 30s For ${TEST_SERVICE} On Registry Service
 ...                      AND  Run Teardown Keywords
 
 *** Variables ***
