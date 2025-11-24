@@ -2,8 +2,8 @@
 # Arguments and the default values
 TEST_STRATEGY=${1:-functional-test} # option: functional-test, integration-test
 SECURITY_SERVICE_NEEDED=${2:-false}
-TEST_SERVICE=${3:-api}
-USE_ARCH=${4:-x86_64}
+USE_ARCH=${3:-x86_64}
+TEST_SERVICE=${4:-api}
 DEPLOY_SERVICES=${5:-} # no-deployment or empty
 
 # Common Variables

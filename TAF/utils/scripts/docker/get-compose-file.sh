@@ -36,7 +36,7 @@ mkdir -p tmp
 # generate single file docker-compose.yml for target configuration without
 # default device services, i.e. no device-virtual service
 ./sync-compose-file.sh "${USE_SHA1}" "${USE_NO_SECURITY}" "-taf" "${USE_ARM64}"
-cp docker-compose-taf${USE_NO_SECURITY}.yml docker-compose.yml
+cp docker-compose-taf${USE_NO_SECURITY}${USE_ARM64}.yml docker-compose.yml
 
 COMPOSE_FILE="docker-compose"
 
