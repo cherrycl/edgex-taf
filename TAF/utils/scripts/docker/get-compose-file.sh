@@ -4,12 +4,16 @@
 USE_SHA1=${1:-odessa}
 USE_SECURITY=${2:--}
 TEST_STRATEGY=${3:-}
-DELAYED_START=${4:-false}
+USE_ARCH=${4:-x86_64}
+DELAYED_START=${5:-false}
 
 . $(dirname "$0")/common-taf.env
 
 # # security or no security
 [ "$USE_SECURITY" != '-security-' ] && USE_NO_SECURITY="-no-secty"
+
+# # x86_64 or arm64
+[ "$USE_ARCH" = "arm64" ] && USE_ARM64="-arm64"
 
 # # USE POSTGRES
 if [ "$USE_SECURITY" != '-security-' ]; then
@@ -31,7 +35,7 @@ MESSAGEBUS_TYPE=mqtt
 mkdir -p tmp
 # generate single file docker-compose.yml for target configuration without
 # default device services, i.e. no device-virtual service
-./sync-compose-file.sh "${USE_SHA1}" "${USE_NO_SECURITY}" "-taf"
+./sync-compose-file.sh "${USE_SHA1}" "${USE_NO_SECURITY}" "-taf" "${USE_ARM64}"
 cp docker-compose-taf${USE_NO_SECURITY}.yml docker-compose.yml
 
 COMPOSE_FILE="docker-compose"
@@ -131,7 +135,7 @@ for compose in ${COMPOSE_FILE}; do
     sed -n "/^\ \ device-modbus:/,/^  [a-z].*:$/p" ${compose}.yml | sed '$d' > tmp/device-modbus_1.yml
     sed -i 's/device-modbus/device-modbus_1/g' tmp/device-modbus_1.yml
     sed -i 's/modbus-simulator/modbus-simulator_1/g' tmp/device-modbus_1.yml
-    sed -i -E 's/device-modbus_1:([0-9]+\.[0-9]+\.[0-9]+)/device-modbus:\1/g' tmp/device-modbus_1.yml
+    sed -i -E "s/device-modbus_1:${USE_SHA1}/device-modbus:\1/g" tmp/device-modbus_1.yml
     if [ "${USE_SECURITY}" = '-security-' ]; then
       sed -i 's/- \/device-modbus_1/- \/device-modbus/g' tmp/device-modbus_1.yml
     fi

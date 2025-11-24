@@ -3,13 +3,13 @@
 TEST_STRATEGY=${1:-functional-test} # option: functional-test, integration-test
 SECURITY_SERVICE_NEEDED=${2:-false}
 TEST_SERVICE=${3:-api}
-DEPLOY_SERVICES=${4:-} # no-deployment or empty
+USE_ARCH=${4:-x86_64}
+DEPLOY_SERVICES=${4\5:-} # no-deployment or empty
 
 # Common Variables
-USE_SHA1=odessa  # edgex-compose branch or SHA1
+USE_SHA1=odessa-dev  # edgex-compose branch or SHA1
 TAF_COMMON_IMAGE=iotechsys/dev-testing-edgex-taf-common:3.1.0
 COMPOSE_IMAGE=docker:28.0.1
-
 
 if [ "$SECURITY_SERVICE_NEEDED" = true ]; then
         USE_SECURITY=-security-
@@ -19,7 +19,7 @@ fi
 
 if [ "$DEPLOY_SERVICES" != "no-deployment" ]; then
   # Get compose file from edgex-compose
-  sh get-compose-file.sh ${USE_SHA1} ${USE_SECURITY} ${TEST_STRATEGY}
+  sh get-compose-file.sh ${USE_SHA1} ${USE_SECURITY} ${TEST_STRATEGY} ${USE_ARCH}
 
   # Create backup report directory
   mkdir -p ${WORK_DIR}/TAF/testArtifacts/reports/cp-edgex
@@ -38,7 +38,7 @@ case ${TEST_STRATEGY} in
     case ${TEST_SERVICE} in
       device-virtual)
         docker run --rm --network host --name taf-common -v ${WORK_DIR}:${WORK_DIR}:z -w ${WORK_DIR} \
-              --security-opt label:disable -e COMPOSE_IMAGE=${COMPOSE_IMAGE} -e ARCH=${ARCH} \
+              --security-opt label:disable -e COMPOSE_IMAGE=${COMPOSE_IMAGE} -e ARCH=${USE_ARCH} \
               -e SECURITY_SERVICE_NEEDED=${SECURITY_SERVICE_NEEDED} \
               -v /var/run/docker.sock:/var/run/docker.sock ${TAF_COMMON_IMAGE} \
               --exclude Skipped -u functionalTest/device-service -p device-virtual
@@ -46,7 +46,7 @@ case ${TEST_STRATEGY} in
       ;;
       device-modbus)
         docker run --rm --network host --name taf-common -v ${WORK_DIR}:${WORK_DIR}:z -w ${WORK_DIR} \
-              --security-opt label:disable -e COMPOSE_IMAGE=${COMPOSE_IMAGE} -e ARCH=${ARCH} \
+              --security-opt label:disable -e COMPOSE_IMAGE=${COMPOSE_IMAGE} -e ARCH=${USE_ARCH} \
               -e SECURITY_SERVICE_NEEDED=${SECURITY_SERVICE_NEEDED} \
               -v /var/run/docker.sock:/var/run/docker.sock ${TAF_COMMON_IMAGE} \
               --exclude Skipped -u functionalTest/device-service -p device-modbus
@@ -54,7 +54,7 @@ case ${TEST_STRATEGY} in
       ;;
       api)
         docker run --rm --network host -v ${WORK_DIR}:${WORK_DIR}:z -w ${WORK_DIR} \
-                --security-opt label:disable -e COMPOSE_IMAGE=${COMPOSE_IMAGE} -e ARCH=${ARCH} \
+                --security-opt label:disable -e COMPOSE_IMAGE=${COMPOSE_IMAGE} -e ARCH=${USE_ARCH} \
                 -e SECURITY_SERVICE_NEEDED=${SECURITY_SERVICE_NEEDED} \
                 --env-file ${WORK_DIR}/TAF/utils/scripts/docker/common-taf.env \
                 -v /var/run/docker.sock:/var/run/docker.sock ${TAF_COMMON_IMAGE} \
@@ -63,7 +63,7 @@ case ${TEST_STRATEGY} in
       ;;
       *)
         docker run --rm --network host -v ${WORK_DIR}:${WORK_DIR}:z -w ${WORK_DIR} \
-                --security-opt label:disable -e COMPOSE_IMAGE=${COMPOSE_IMAGE} -e ARCH=${ARCH} \
+                --security-opt label:disable -e COMPOSE_IMAGE=${COMPOSE_IMAGE} -e ARCH=${USE_ARCH} \
                 -e SECURITY_SERVICE_NEEDED=${SECURITY_SERVICE_NEEDED} \
                 --env-file ${WORK_DIR}/TAF/utils/scripts/docker/common-taf.env \
                 -v /var/run/docker.sock:/var/run/docker.sock ${TAF_COMMON_IMAGE} \
