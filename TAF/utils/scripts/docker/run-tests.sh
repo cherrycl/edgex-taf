@@ -4,7 +4,7 @@ TEST_STRATEGY=${1:-functional-test} # option: functional-test, integration-test
 SECURITY_SERVICE_NEEDED=${2:-false}
 TEST_SERVICE=${3:-api}
 USE_ARCH=${4:-x86_64}
-DEPLOY_SERVICES=${4\5:-} # no-deployment or empty
+DEPLOY_SERVICES=${5:-} # no-deployment or empty
 
 # Common Variables
 USE_SHA1=odessa-dev  # edgex-compose branch or SHA1
