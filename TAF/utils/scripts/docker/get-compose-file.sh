@@ -135,7 +135,7 @@ for compose in ${COMPOSE_FILE}; do
     sed -n "/^\ \ device-modbus:/,/^  [a-z].*:$/p" ${compose}.yml | sed '$d' > tmp/device-modbus_1.yml
     sed -i 's/device-modbus/device-modbus_1/g' tmp/device-modbus_1.yml
     sed -i 's/modbus-simulator/modbus-simulator_1/g' tmp/device-modbus_1.yml
-    sed -i -E "s/device-modbus_1${USE_ARM64}:${USE_SHA1}/device-modbus${USE_ARM64}:\1/g" tmp/device-modbus_1.yml
+    sed -i "s/device-modbus_1${USE_ARM64}:odessa/device-modbus${USE_ARM64}:odessa/g" tmp/device-modbus_1.yml
     if [ "${USE_SECURITY}" = '-security-' ]; then
       sed -i 's/- \/device-modbus_1/- \/device-modbus/g' tmp/device-modbus_1.yml
     fi
