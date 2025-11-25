@@ -83,7 +83,7 @@ Config005 - Verfiy reading contains units when ReadingUnits is false
 Set Device ${config} to ${value} For ${service_name} On Registry Service
     ${path}=  Set Variable  /${service_name}/Device/${config}
     Update Service Configuration  ${path}  ${value}
-    Restart Services  device-virtual
+    Restart Services  ${service_name}
 
 Set Writable.Reading.ReadingUnits to ${value} For ${service_name} On Registry Service
     ${path}=  Set Variable  /${service_name}/Writable/Reading/ReadingUnits
