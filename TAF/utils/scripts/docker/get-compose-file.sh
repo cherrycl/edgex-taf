@@ -135,7 +135,7 @@ for compose in ${COMPOSE_FILE}; do
     sed -n "/^\ \ device-modbus:/,/^  [a-z].*:$/p" ${compose}.yml | sed '$d' > tmp/device-modbus_1.yml
     sed -i 's/device-modbus/device-modbus_1/g' tmp/device-modbus_1.yml
     sed -i 's/modbus-simulator/modbus-simulator_1/g' tmp/device-modbus_1.yml
-    sed -i -E "s/device-modbus_1:${USE_SHA1}/device-modbus:\1/g" tmp/device-modbus_1.yml
+    sed -i -E "s/device-modbus_1${USE_ARM64}:${USE_SHA1}/device-modbus${USE_ARM64}:\1/g" tmp/device-modbus_1.yml
     if [ "${USE_SECURITY}" = '-security-' ]; then
       sed -i 's/- \/device-modbus_1/- \/device-modbus/g' tmp/device-modbus_1.yml
     fi
@@ -163,7 +163,7 @@ for compose in ${COMPOSE_FILE}; do
     # Add second modbus simulator
     sed -n "/^\ \ modbus-simulator:/,/^  [a-z].*:$/p" ${compose}.yml | sed '$d' > tmp/modbus-sim_1.yml
     sed -i 's/modbus-simulator/modbus-simulator_1/g' tmp/modbus-sim_1.yml
-    sed -i -E 's/modbus-simulator_1:([0-9]+\.[0-9]+\.[0-9]+)/modbus-simulator:\1/g' tmp/modbus-sim_1.yml
+    sed -i -E "s/modbus-simulator_1${USE_ARM64}:([0-9]+\.[0-9]+\.[0-9]+)/modbus-simulator${USE_ARM64}:\1/g" tmp/modbus-sim_1.yml
     sed -i 's/published: \"1502\"/published: "1512"/g' tmp/modbus-sim_1.yml
     sed -i "/services:/ r tmp/modbus-sim_1.yml" ${compose}.yml
 
