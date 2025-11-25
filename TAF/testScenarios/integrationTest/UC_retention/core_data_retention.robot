@@ -229,7 +229,7 @@ No Purge Log Found in ${service}
 
 Get Log in ${service}
     ${logs}  Run Process  ${WORK_DIR}/TAF/utils/scripts/${DEPLOY_TYPE}/query-docker-logs.sh ${service} ${timestamp}
-             ...     shell=True  stderr=STDOUT  output_encoding=UTF-8  timeout=5s
+             ...     shell=True  stderr=STDOUT  output_encoding=UTF-8
     Log  ${logs.stdout}
     Set Test Variable  ${service_log}  ${logs.stdout}
 
