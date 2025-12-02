@@ -29,7 +29,6 @@ CoreConfig001 - Set core-data MessageBus.BaseTopicPrefix not match device-virtua
                 ...      AND  Terminate Process  ${handle_mqtt}  kill=True
 
 CoreConfig002 - Set core-data MessageBus.Optional.Qos (SUBSCRIBE)
-    [Tags]  backward-skip
     Given Set Test Variable  ${device_name}  messagebus-mqtt-core-4
     And Set MessageBus Optional/Qos=2 For core-data On Registry Service
     And Create Device For device-virtual With Name ${device_name}

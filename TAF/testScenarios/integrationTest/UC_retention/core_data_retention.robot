@@ -15,7 +15,7 @@ Suite Teardown  Run Keywords  Set Core-Data Retention In Registry Service  10m  
 ${SUITE}          core-data Retention
 ${LOG_FILE_PATH}  ${WORK_DIR}/TAF/testArtifacts/logs/core_data_retention.log
 ${DATA_CONSOL_PATH}  /core-data
-${DEFAULT_MAXCAP}  5
+${DEFAULT_MAXCAP}  8
 ${DEFAULT_MINCAP}  3
 ${DEFAULT_INTERVAL}  2s
 ${DEFAULT_DURATION}  2
@@ -30,8 +30,7 @@ CoreDataRetention001 - Retention is executed if event count is over DefaultMaxCa
     And Sleep  3s
     Then Wait Until Keyword Succeeds  3x  1s  Purge Log Found in core-data
     And Stored Event Count Over Duration Should Correct  ${DEFAULT_MAXCAP}  ${DEFAULT_MINCAP}  ${DEFAULT_DURATION}
-    [Teardown]  Run Keywords  Set Core-Data Retention In Registry Service  10m  -1  1  168h
-                ...      AND  Run Keyword And Ignore Error  Delete Device By Name ${deviceName}
+    [Teardown]  Run Keywords  Run Keyword And Ignore Error  Delete Device By Name ${deviceName}
                 ...      AND  Delete all events by age
 
 CoreDataRetention002 - Retention is not executed if event count is less than DefaultMaxCap value
@@ -41,8 +40,7 @@ CoreDataRetention002 - Retention is not executed if event count is less than Def
     And Sleep  3s
     Then No Purge Log Found in core-data
     And Stored Event Count Over Duration Should Correct  ${DEFAULT_MAXCAP}  1  ${DEFAULT_DURATION}
-    [Teardown]  Run Keywords  Set Core-Data Retention In Registry Service  10m  -1  1  168h
-                ...      AND  Run Keyword And Ignore Error  Delete Device By Name ${deviceName}
+    [Teardown]  Run Keywords  Run Keyword And Ignore Error  Delete Device By Name ${deviceName}
                 ...      AND  Delete all events by age
 
 CoreDataRetention003 - DefaultMaxCap is disabled if the value is -1
@@ -52,19 +50,17 @@ CoreDataRetention003 - DefaultMaxCap is disabled if the value is -1
     And Sleep  3s
     Then Wait Until Keyword Succeeds  3x  1s  Purge Log Found in core-data
     And Stored Event Count Over Duration Should Correct  -1  ${DEFAULT_MINCAP}  ${DEFAULT_DURATION}
-    [Teardown]  Run Keywords  Set Core-Data Retention In Registry Service  10m  -1  1  168h
-                ...      AND  Run Keyword And Ignore Error  Delete Device By Name ${deviceName}
+    [Teardown]  Run Keywords  Run Keyword And Ignore Error  Delete Device By Name ${deviceName}
                 ...      AND  Delete all events by age
 
 CoreDataRetention004 - DefaultMinCap is disabled if the value is -1
     Given Set Core-Data Retention In Registry Service  ${DEFAULT_INTERVAL}  ${DEFAULT_MAXCAP}  -1  ${DEFAULT_DURATION}s
     And Set Test Variable  ${deviceName}  data-retention-device4
-    When Create Events With AutoEvent Interval 500ms
+    When Create Events With AutoEvent Interval 300ms
     And Sleep  3s
     Then Wait Until Keyword Succeeds  3x  1s  Purge Log Found in core-data
     And Stored Event Count Over Duration Should Correct  ${DEFAULT_MAXCAP}  -1  ${DEFAULT_DURATION}
-    [Teardown]  Run Keywords  Set Core-Data Retention In Registry Service  10m  -1  1  168h
-                ...      AND  Run Keyword And Ignore Error  Delete Device By Name ${deviceName}
+    [Teardown]  Run Keywords  Run Keyword And Ignore Error  Delete Device By Name ${deviceName}
                 ...      AND  Delete all events by age
 
 CoreDataRetention005 - Disable retention when interval=0s
@@ -73,32 +69,30 @@ CoreDataRetention005 - Disable retention when interval=0s
     When Create Events With AutoEvent Interval 300ms
     And Sleep  3s
     Then No Purge Log Found in core-data
-    [Teardown]  Run Keywords  Set Core-Data Retention In Registry Service  10m  -1  1  168h
-                ...      AND  Run Keyword And Ignore Error  Delete Device By Name ${deviceName}
+    [Teardown]  Run Keywords  Run Keyword And Ignore Error  Delete Device By Name ${deviceName}
                 ...      AND  Delete all events by age
 
 CoreDataRetention006 - Use retention setting from the autoevent
-    ${retention}  Create Dictionary  maxCap=${8}  minCap=${5}  duration=1s
+    ${retention}  Create Dictionary  maxCap=${10}  minCap=${5}  duration=1s
     Given Set Core-Data Retention In Registry Service  ${DEFAULT_INTERVAL}  -1  1  168h
     And Set Test Variable  ${deviceName}  data-retention-device6
     When Create Events With AutoEvent Retention  100ms  ${retention}
-    And Sleep  1s
+    And Sleep  3s
     Then Wait Until Keyword Succeeds  3x  1s  Purge Log Found in core-data
     And Retention For sourceName ${TEST_COMMAND_2} Should Be Skipped
     And Stored Event Count Over Duration Should Correct  10  5  1
-    [Teardown]  Run Keywords  Set Core-Data Retention In Registry Service  10m  -1  1  168h
-                ...      AND  Run Keyword And Ignore Error  Delete Device By Name ${deviceName}
+    [Teardown]  Run Keywords  Run Keyword And Ignore Error  Delete Device By Name ${deviceName}
                 ...      AND  Delete all events by age
 
 CoreDataRetention007 - No MaxCap is set in the autoevent
-    ${retention}  Create Dictionary  minCap=${3}  duration=1s
-    Given Set Core-Data Retention In Registry Service  ${DEFAULT_INTERVAL}  10  1  168h
+    ${retention}  Create Dictionary  minCap=${1}  duration=1s
+    Given Set Core-Data Retention In Registry Service  ${DEFAULT_INTERVAL}  ${DEFAULT_MAXCAP}  1  168h
     And Set Test Variable  ${deviceName}  data-retention-device7
     When Create Events With AutoEvent Retention  100ms  ${retention}
-    And Sleep  1s
+    And Sleep  3s
     Then Wait Until Keyword Succeeds  3x  1s  Purge Log Found in core-data
     And Retention For sourceName ${TEST_COMMAND_2} Should Be Skipped
-    And Stored Event Count Over Duration Should Correct  ${DEFAULT_MAXCAP}  3  1
+    And Stored Event Count Over Duration Should Correct  ${DEFAULT_MAXCAP}  1  1
     [Teardown]  Run Keywords  Run Keyword And Ignore Error  Delete Device By Name ${deviceName}
                 ...      AND  Delete all events by age
 
@@ -107,39 +101,40 @@ CoreDataRetention008 - MaxCap is disabled if the value is -1 in autoevent
     Given Set Core-Data Retention In Registry Service  ${DEFAULT_INTERVAL}  ${DEFAULT_MAXCAP}  1  168h
     And Set Test Variable  ${deviceName}  data-retention-device8
     When Create Events With AutoEvent Retention  100ms  ${retention}
-    And Sleep  1s
+    And Sleep  3s
     Then Wait Until Keyword Succeeds  3x  1s  Purge Log Found in core-data
     And Retention For sourceName ${TEST_COMMAND_2} Should Be Skipped
     And Stored Event Count Over Duration Should Correct  -1  5  1
-    [Teardown]  Run Keywords  Run Keyword And Ignore Error  Delete Device By Name ${deviceName}
+    [Teardown]  Run Keywords  Dump Last 100 lines Log  core-data
+                ...      AND  Run Keyword And Ignore Error  Delete Device By Name ${deviceName}
                 ...      AND  Delete all events by age
 
 CoreDataRetention009 - MinCap is disabled if the value is -1 in autoevent
-    ${retention}  Create Dictionary  maxCap=${8}  minCap=${-1}  duration=1s
+    ${retention}  Create Dictionary  maxCap=${10}  minCap=${-1}  duration=1s
     Given Set Core-Data Retention In Registry Service  ${DEFAULT_INTERVAL}  ${DEFAULT_MAXCAP}  1  168h
     And Set Test Variable  ${deviceName}  data-retention-device9
     When Create Events With AutoEvent Retention  100ms  ${retention}
-    And Sleep  1s
+    And Sleep  3s
     Then Wait Until Keyword Succeeds  3x  1s  Purge Log Found in core-data
     And Retention For sourceName ${TEST_COMMAND_2} Should Be Skipped
-    And Stored Event Count Over Duration Should Correct  8  -1  1
+    And Stored Event Count Over Duration Should Correct  10  -1  1
     [Teardown]  Run Keywords  Run Keyword And Ignore Error  Delete Device By Name ${deviceName}
                 ...      AND  Delete all events by age
 
 CoreDataRetention010 - No MinCap is set in the auto-event
-    ${retention}  Create Dictionary  maxCap=${8}  duration=1s
+    ${retention}  Create Dictionary  maxCap=${10}  duration=1s
     Given Set Core-Data Retention In Registry Service  ${DEFAULT_INTERVAL}  ${DEFAULT_MAXCAP}  ${DEFAULT_MINCAP}  168h
     And Set Test Variable  ${deviceName}  data-retention-device10
     When Create Events With AutoEvent Retention  100ms  ${retention}
-    And Sleep  1s
+    And Sleep  3s
     Then Wait Until Keyword Succeeds  3x  1s  Purge Log Found in core-data
     And Retention For sourceName ${TEST_COMMAND_2} Should Be Skipped
-    And Stored Event Count Over Duration Should Correct  8  ${DEFAULT_MINCAP}  1
+    And Stored Event Count Over Duration Should Correct  10  ${DEFAULT_MINCAP}  1
     [Teardown]  Run Keywords  Run Keyword And Ignore Error  Delete Device By Name ${deviceName}
                 ...      AND  Delete all events by age
 
 CoreDataRetention011 - All events with the source should be purged when set MinCap=-1 and duration=0s in the autoevent
-    ${retention}  Create Dictionary  maxCap=${8}  minCap=${-1}  duration=0s
+    ${retention}  Create Dictionary  maxCap=${10}  minCap=${-1}  duration=0s
     Given Set Core-Data Retention In Registry Service  ${DEFAULT_INTERVAL}  ${DEFAULT_MAXCAP}  1  168h
     And Set Test Variable  ${deviceName}  data-retention-device11
     When Create Events With AutoEvent Retention  100ms  ${retention}
@@ -147,7 +142,8 @@ CoreDataRetention011 - All events with the source should be purged when set MinC
     Then No Purge Log Found in core-data
     And Retention For sourceName ${TEST_COMMAND_2} Should Be Skipped
     And Stored Event Count Over Duration Should Correct  10  -1  0
-    [Teardown]  Run Keywords  Run Keyword And Ignore Error  Delete Device By Name ${deviceName}
+    [Teardown]  Run Keywords  Dump Last 100 lines Log  core-data
+                ...      AND  Run Keyword And Ignore Error  Delete Device By Name ${deviceName}
                 ...      AND  Delete all events by age
 
 *** Keywords ***
@@ -160,12 +156,6 @@ Set Core-Data Retention In Registry Service
         Update Service Configuration  ${path}  ${value}
     END
     Restart Services  core-data
-
-Create ${range} events with ${command}
-    FOR  ${INDEX}  IN RANGE  ${range}
-        Get device data by device ${device_name} and command ${command} with ds-pushevent=true
-    END
-    sleep  500ms
 
 Get Purge Timestamp
     ${pattern}  Set Variable    .*purge events by duration.*?${TEST_COMMAND_1}.*
@@ -188,16 +178,17 @@ Stored Event Count Over Duration Should Correct
     [Arguments]  ${max}  ${min}  ${duration}
     IF  ${PURGE_EXECUTE} == 0
         ${purge_time}  Get Purge Timestamp
-        ${compare_time}  Evaluate  int(${purge_time})-int(${duration})*1000000000
     ELSE
-        ${time}  Get Current Nanoseconds Epoch Time
-        ${compare_time}  Evaluate  ${time} - 3000000000
+        ${purge_time}  Get Current Nanoseconds Epoch Time
     END
     ${count}  Set Variable  ${0}
     Query events by device name  ${deviceName}
     FOR  ${INDEX}  IN RANGE  len(${content}[events])
         ${event}  Set Variable  ${content}[events][${INDEX}]
-        IF  "${event}[sourceName]" == "${TEST_COMMAND_1}" and ${event}[origin] <= ${compare_time}
+        ${purge_interval}  Evaluate  ${purge_time} - ${event}[origin]
+        IF  "${event}[sourceName]" == "${TEST_COMMAND_1}" and ${purge_time} > ${event}[origin] and ${purge_interval} > int(${duration})*1000000000
+            Log  ${purge_time}
+            Log   ${event}[origin]
             ${count}  Evaluate  ${count} + 1
         END
     END
@@ -229,7 +220,7 @@ No Purge Log Found in ${service}
 
 Get Log in ${service}
     ${logs}  Run Process  ${WORK_DIR}/TAF/utils/scripts/${DEPLOY_TYPE}/query-docker-logs.sh ${service} ${timestamp}
-             ...     shell=True  stderr=STDOUT  output_encoding=UTF-8  timeout=5s
+             ...     shell=True  stderr=STDOUT  output_encoding=UTF-8
     Log  ${logs.stdout}
     Set Test Variable  ${service_log}  ${logs.stdout}
 

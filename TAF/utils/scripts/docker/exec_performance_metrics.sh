@@ -7,8 +7,8 @@ USE_SHA1=${3:-odessa}
 # # security or not
 [ "$USE_SECURITY" = "-security-" ] && SECURITY_SERVICE_NEEDED="true"
 
-TAF_COMMON_IMAGE=iotechsys/dev-testing-edgex-taf-common:3.1.0
-COMPOSE_IMAGE=docker:28.0.1
+TAF_COMMON_IMAGE=iotechsys/dev-testing-edgex-taf-common:odessa
+COMPOSE_IMAGE=docker:29.0.4
 
 
 # Pull EdgeX images

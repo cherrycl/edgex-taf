@@ -11,8 +11,6 @@ git clone https://github.com/edgexfoundry/edgex-taf.git
 ``` 
 # Required variables
 export WORK_DIR=${HOME}/edgex-taf
-export REGISTRY_SERVICE=${REGISTRY_SERVICE}
-export USE_DB=${TEST_DB}
 ```
 
 #### Run test by shell script with arguments
@@ -21,7 +19,7 @@ export USE_DB=${TEST_DB}
 # Arguments for run-tests.sh
 ${TEST_STRATEGY}: functional-test | integration-test
 ${SECURITY_SERVICE_NEEDED}: false | true
-${TEST_SERVICE}: all (default) | device-virtual | device-modbus | ${directory} under TAF/testScenarios/functionalTest/API | mqtt (integration-test)
+${TEST_SERVICE}: all (default) | device-virtual | device-modbus | ${directory} under TAF/testScenarios/functionalTest/API | Leave it empty for integration-test
 ${DEPLOY_SERVICES}: no-deployment(If edgex services are deployed in place, use 'no-deployment' Otherwise, leave it empty.)
 cd ${WORK_DIR}/TAF/utils/scripts/docker
 
@@ -30,8 +28,8 @@ sh run-tests.sh ${TEST_STRATEGY} ${SECURITY_SERVICE_NEEDED} ${TEST_SERVICE} ${DE
 
 # If using x86_64, no need for secuity, adopt for functional-test, choose "api" for test_service and edgex service are deployed in place, it should be:
 ex. sh run-tests.sh functional-test false api no-deployment
-# If using x86_64, no need for secuity, adopt for integration-test, choose "mqtt" for test_service and edgex service are not deployed in place, it should be:
-ex. sh run-tests.sh integration-test false mqtt 
+# If using x86_64, no need for secuity, adopt for integration-test, and edgex service are not deployed in place, it should be:
+ex. sh run-tests.sh integration-test false
 ```
 
 #### View the test report
@@ -93,7 +91,6 @@ Open the report file by browser: ${WORK_DIR}/TAF/testArtifacts/reports/cp-edgex/
     
     # Before launching Service, please export the following variables.
     export EDGEX_SECURITY_SECRET_STORE=false
-    export REGISTRY_SERVICE=${REGISTRY_SERVICE}
 
     # Run Test Command
     python3 -m TUC --exclude Skipped -u functionalTest/API/${ServiceDir} -p default
@@ -104,7 +101,6 @@ Open the report file by browser: ${WORK_DIR}/TAF/testArtifacts/reports/cp-edgex/
    
     # Before launching APP Service, please export the following variables.
     export EDGEX_SECURITY_SECRET_STORE=false
-    export REGISTRY_SERVICE=${REGISTRY_SERVICE}
     export SERVICE_PORT=59705 (For functional-tests)
     export SERVICE_PORT=59704 (For http-export)
    
@@ -116,7 +112,6 @@ Open the report file by browser: ${WORK_DIR}/TAF/testArtifacts/reports/cp-edgex/
     ``` bash
     # Before launching Device Service, please export the following variables.
     export EDGEX_SECURITY_SECRET_STORE=false
-    export REGISTRY_SERVICE=${REGISTRY_SERVICE}
    
     # Modify the ProfilesDir value on configuration.toml under ${HOME}/edgex-taf/TAF/config/${profile}
     ProfilesDir = ${HOME}/edgex-taf/TAF/config/${profile}
@@ -132,10 +127,9 @@ Open the report file by browser: ${WORK_DIR}/TAF/testArtifacts/reports/cp-edgex/
 
     ###### Run Integration testing:
     `Only support deploying edgex services through docker-compose file.`
-    Run test with MQTT bus
     ```
-    python3 -m TUC --exclude Skipped --include mqtt-bus -u deploy.robot -p default
-    python3 -m TUC --exclude Skipped --include MessageBus=MQTT -u integrationTest -p device-virtual --name MQTT-bus
+    python3 -m TUC --exclude Skipped -u deploy.robot -p default
+    python3 -m TUC --exclude Skipped -u integrationTest -p device-virtual --name integration-test
     ```
 
 4. Shutdown edgex:

@@ -7,8 +7,8 @@ DEPLOY_SERVICES=${4:-} # no-deployment or empty
 
 # Common Variables
 USE_SHA1=odessa  # edgex-compose branch or SHA1
-TAF_COMMON_IMAGE=iotechsys/dev-testing-edgex-taf-common:3.1.0
-COMPOSE_IMAGE=docker:28.0.1
+TAF_COMMON_IMAGE=iotechsys/dev-testing-edgex-taf-common:odessa
+COMPOSE_IMAGE=docker:29.0.4
 
 
 if [ "$SECURITY_SERVICE_NEEDED" = true ]; then
@@ -82,7 +82,7 @@ case ${TEST_STRATEGY} in
             --env-file ${WORK_DIR}/TAF/utils/scripts/docker/common-taf.env \
             -v /tmp/edgex/secrets:/tmp/edgex/secrets:z \
             -v /var/run/docker.sock:/var/run/docker.sock ${TAF_COMMON_IMAGE} \
-            --exclude Skipped --include MessageBus=${TEST_SERVICE} -u integrationTest -p device-virtual
+            --exclude Skipped --exclude DelayedStart -u integrationTest -p device-virtual
     cp ${WORK_DIR}/TAF/testArtifacts/reports/edgex/log.html ${WORK_DIR}/TAF/testArtifacts/reports/cp-edgex/integration-test.html
   ;;
   *)
