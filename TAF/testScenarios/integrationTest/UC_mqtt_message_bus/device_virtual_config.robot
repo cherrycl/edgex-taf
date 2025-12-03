@@ -42,7 +42,6 @@ Config002 - Modify MessageBus.BaseTopicPrefix and receive data from the topic co
                 ...      AND  Set MessageBus BaseTopicPrefix=edgex For core-data On Registry Service
 
 Config003 - Set device-virtual MessageBus.Optional.Qos (PUBLISH)
-    [Tags]  backward-skip
     Given Set Test Variable  ${device_name}  messagebus-true-device-6
     And Create Device For device-virtual With Name ${device_name}
     And Set MessageBus Optional/Qos=2 For device-virtual On Registry Service
