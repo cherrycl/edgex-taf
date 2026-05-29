@@ -19,7 +19,6 @@ BASE_URL = "localhost"
 # OS environment variables
 SECURITY_SERVICE_NEEDED=os.getenv("SECURITY_SERVICE_NEEDED")
 DOCKER_HOST_IP=os.getenv("DOCKER_HOST_IP")
-ARCH=os.getenv("ARCH")
 
 # Token related variables
 jwt_token = ''

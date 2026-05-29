@@ -24,7 +24,7 @@ else
         DELAYED_START=false
 fi
 
-if [ "$DEPLOY_SERVICES" != "no-deployment" ]; then
+if [ "$DEPLOY_SERVICES" != "no-deployment" ] && [ "$TEST_STRATEGY" != "merge" ]; then
   echo "Run Deployment With parameters. Strategy: $TEST_STRATEGY, delayedStart: $DELAYED_START"
   # Get compose file from edgex-compose
   sh get-compose-file.sh ${USE_SHA1} ${USE_SECURITY} ${TEST_STRATEGY}
@@ -58,41 +58,41 @@ case ${TEST_STRATEGY} in
     case ${TEST_SERVICE} in
       all)
         docker run --rm --network host -v ${WORK_DIR}:${WORK_DIR}:z -w ${WORK_DIR} \
-                --security-opt label:disable -e COMPOSE_IMAGE=${COMPOSE_IMAGE} -e ARCH=${USE_ARCH} \
+                --security-opt label:disable -e COMPOSE_IMAGE=${COMPOSE_IMAGE} \
                 -e SECURITY_SERVICE_NEEDED=${SECURITY_SERVICE_NEEDED} \
                 --env-file ${WORK_DIR}/TAF/utils/scripts/docker/common-taf.env \
                 -v /var/run/docker.sock:/var/run/docker.sock ${TAF_COMMON_IMAGE} \
                 --exclude Skipped -t functionalTest/API -cd default --name API -o api --no-cleanup
         # device-virtual
         docker run --rm --network host --name taf-common -v ${WORK_DIR}:${WORK_DIR}:z -w ${WORK_DIR} \
-              --security-opt label:disable -e COMPOSE_IMAGE=${COMPOSE_IMAGE} -e ARCH=${USE_ARCH} \
+              --security-opt label:disable -e COMPOSE_IMAGE=${COMPOSE_IMAGE} \
               -e SECURITY_SERVICE_NEEDED=${SECURITY_SERVICE_NEEDED} \
               -v /var/run/docker.sock:/var/run/docker.sock ${TAF_COMMON_IMAGE} \
               --exclude Skipped -t functionalTest/device-service -cd device-virtual -o device-virtual-common --no-cleanup
         # device-modbus
         docker run --rm --network host --name taf-common -v ${WORK_DIR}:${WORK_DIR}:z -w ${WORK_DIR} \
-              --security-opt label:disable -e COMPOSE_IMAGE=${COMPOSE_IMAGE} -e ARCH=${USE_ARCH} \
+              --security-opt label:disable -e COMPOSE_IMAGE=${COMPOSE_IMAGE} \
               -e SECURITY_SERVICE_NEEDED=${SECURITY_SERVICE_NEEDED} \
               -v /var/run/docker.sock:/var/run/docker.sock ${TAF_COMMON_IMAGE} \
               --exclude Skipped -t functionalTest/device-service -cd device-modbus -o device-modbus-common --no-cleanup
       ;;
       device-virtual)
         docker run --rm --network host --name taf-common -v ${WORK_DIR}:${WORK_DIR}:z -w ${WORK_DIR} \
-              --security-opt label:disable -e COMPOSE_IMAGE=${COMPOSE_IMAGE} -e ARCH=${USE_ARCH} \
+              --security-opt label:disable -e COMPOSE_IMAGE=${COMPOSE_IMAGE} \
               -e SECURITY_SERVICE_NEEDED=${SECURITY_SERVICE_NEEDED} \
               -v /var/run/docker.sock:/var/run/docker.sock ${TAF_COMMON_IMAGE} \
               --exclude Skipped -t functionalTest/device-service -cd device-virtual -o device-virtual-common --no-cleanup
       ;;
       device-modbus)
         docker run --rm --network host --name taf-common -v ${WORK_DIR}:${WORK_DIR}:z -w ${WORK_DIR} \
-              --security-opt label:disable -e COMPOSE_IMAGE=${COMPOSE_IMAGE} -e ARCH=${USE_ARCH} \
+              --security-opt label:disable -e COMPOSE_IMAGE=${COMPOSE_IMAGE} \
               -e SECURITY_SERVICE_NEEDED=${SECURITY_SERVICE_NEEDED} \
               -v /var/run/docker.sock:/var/run/docker.sock ${TAF_COMMON_IMAGE} \
               --exclude Skipped -t functionalTest/device-service -cd device-modbus -o device-modbus-common --no-cleanup
       ;;
       api)
         docker run --rm --network host -v ${WORK_DIR}:${WORK_DIR}:z -w ${WORK_DIR} \
-                --security-opt label:disable -e COMPOSE_IMAGE=${COMPOSE_IMAGE} -e ARCH=${USE_ARCH} \
+                --security-opt label:disable -e COMPOSE_IMAGE=${COMPOSE_IMAGE} \
                 -e SECURITY_SERVICE_NEEDED=${SECURITY_SERVICE_NEEDED} \
                 --env-file ${WORK_DIR}/TAF/utils/scripts/docker/common-taf.env \
                 -v /var/run/docker.sock:/var/run/docker.sock ${TAF_COMMON_IMAGE} \
@@ -100,7 +100,7 @@ case ${TEST_STRATEGY} in
       ;;
       *)
         docker run --rm --network host -v ${WORK_DIR}:${WORK_DIR}:z -w ${WORK_DIR} \
-                --security-opt label:disable -e COMPOSE_IMAGE=${COMPOSE_IMAGE} -e ARCH=${USE_ARCH} \
+                --security-opt label:disable -e COMPOSE_IMAGE=${COMPOSE_IMAGE} \
                 -e SECURITY_SERVICE_NEEDED=${SECURITY_SERVICE_NEEDED} \
                 --env-file ${WORK_DIR}/TAF/utils/scripts/docker/common-taf.env \
                 -v /var/run/docker.sock:/var/run/docker.sock ${TAF_COMMON_IMAGE} \
@@ -115,7 +115,7 @@ case ${TEST_STRATEGY} in
     case ${TEST_SERVICE} in
       delayedStart)
         docker run --rm --network host -v ${WORK_DIR}:${WORK_DIR}:z -w ${WORK_DIR} \
-           --security-opt label:disable -e COMPOSE_IMAGE=${COMPOSE_IMAGE} -e ARCH=${USE_ARCH} \
+           --security-opt label:disable -e COMPOSE_IMAGE=${COMPOSE_IMAGE} \
            -e SECURITY_SERVICE_NEEDED=${SECURITY_SERVICE_NEEDED} \
            -v /var/run/docker.sock:/var/run/docker.sock -v /tmp/edgex/secrets:/tmp/edgex/secrets:z \
            --env-file ${WORK_DIR}/TAF/utils/scripts/docker/common-taf.env ${TAF_COMMON_IMAGE} \
@@ -124,7 +124,7 @@ case ${TEST_STRATEGY} in
       ;;
       all)
         docker run --rm --network host -v ${WORK_DIR}:${WORK_DIR}:z -w ${WORK_DIR} \
-            --security-opt label:disable -e COMPOSE_IMAGE=${COMPOSE_IMAGE} -e ARCH=${USE_ARCH} \
+            --security-opt label:disable -e COMPOSE_IMAGE=${COMPOSE_IMAGE} \
             -e SECURITY_SERVICE_NEEDED=${SECURITY_SERVICE_NEEDED} \
             --env-file ${WORK_DIR}/TAF/utils/scripts/docker/common-taf.env \
             -v /tmp/edgex/secrets:/tmp/edgex/secrets:z \
@@ -137,9 +137,17 @@ case ${TEST_STRATEGY} in
       ;;
     esac
   ;;
+  merge)
+    docker run --rm --network host -v ${WORK_DIR}:${WORK_DIR}:rw,z -w ${WORK_DIR} \
+          -e COMPOSE_IMAGE=${COMPOSE_IMAGE} ${TAF_COMMON_IMAGE} \
+          rebot TAF/testArtifacts/reports TAF/testArtifacts/reports/merged-report
+    ARCH=$(uname -m)
+    cd $WORK_DIR/TAF/testArtifacts/reports/merged-report
+    sudo mv log.html ${ARCH}${USE_SECURITY}log.html
+  ;;
 esac
 
-if [ "$DEPLOY_SERVICES" != "no-deployment" ]; then
+if [ "$DEPLOY_SERVICES" != "no-deployment" ] && [ "$TEST_STRATEGY" != "merge" ]; then
   # Shutdown
   docker run --rm --network host -v ${WORK_DIR}:${WORK_DIR}:z -w ${WORK_DIR} \
           -e COMPOSE_IMAGE=${COMPOSE_IMAGE} --security-opt label:disable \
